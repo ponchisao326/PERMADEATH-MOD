@@ -13,7 +13,7 @@
     "client": [
       "com.victorgponce.permadeath_mod.client.Permadeath_modClient"
     ],
-    "main": [
+    "server": [
       "com.victorgponce.permadeath_mod.Permadeath_mod"
     ]
   },
