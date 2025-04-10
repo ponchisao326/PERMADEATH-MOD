@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.victorgponce.permadeath_mod.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
