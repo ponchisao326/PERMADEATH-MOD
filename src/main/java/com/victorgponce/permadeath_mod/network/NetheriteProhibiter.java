@@ -21,8 +21,10 @@ public class NetheriteProhibiter implements PlayerBlockBreakEvents.Before {
             // Send a message to the player
             playerEntity.sendMessage(Text.literal("You cannot break this block, netherite is prohibited")
                     .formatted(Formatting.DARK_RED, Formatting.BOLD), false);
+            // Cancel the event if the conditions are met
             return false;
         }
+        // Nothing happens
         return true;
     }
 }

@@ -1,12 +1,17 @@
 package com.victorgponce.permadeath_mod;
 
 import com.victorgponce.permadeath_mod.data.DataBaseHandler;
+import com.victorgponce.permadeath_mod.data.WorldHolder;
 import com.victorgponce.permadeath_mod.network.NetheriteProhibiter;
 import com.victorgponce.permadeath_mod.network.PlayerJoinListener;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +60,12 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
 
         ServerPlayConnectionEvents.JOIN.register(new PlayerJoinListener());
         PlayerBlockBreakEvents.BEFORE.register(new NetheriteProhibiter());
+
+        ServerLifecycleEvents.SERVER_STARTED.register((MinecraftServer server) -> {
+            ServerWorld overworld = server.getWorld(World.OVERWORLD);
+            WorldHolder.setOverworld(overworld);
+            System.out.println("El overworld se ha almacenado correctamente en WorldHolder.");
+        });
     }
 
 }

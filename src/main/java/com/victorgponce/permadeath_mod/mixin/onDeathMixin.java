@@ -3,21 +3,27 @@ package com.victorgponce.permadeath_mod.mixin;
 import com.victorgponce.permadeath_mod.data.DataBaseHandler;
 import com.victorgponce.permadeath_mod.util.BanManager;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
+import com.victorgponce.permadeath_mod.util.DeathTrain;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Mixin(ServerPlayerEntity.class)
-public class onDeathMixin {
+public abstract class onDeathMixin {
+
+    @Shadow public abstract boolean damage(ServerWorld world, DamageSource source, float amount);
 
     @Inject(method = "onDeath", at = @At("TAIL"))
     private void onDeath(DamageSource damageSource, CallbackInfo ci) {
@@ -53,6 +59,7 @@ public class onDeathMixin {
                 "VALUES ((SELECT PlayerID FROM Players WHERE Username = '" + escapedPlayerName + "'), '" + escapedCause + "')";
         DataBaseHandler.databaseConnector(url, user, password, insertDeathSql);
 
+        DeathTrain.enableDeathTrain(damageSource);
         // Call the CheckAndBan function
         BanManager.checkAndBan(player);
     }
