@@ -1,6 +1,7 @@
 package com.victorgponce.permadeath_mod.mixin;
 
 import com.victorgponce.permadeath_mod.data.DataBaseHandler;
+import com.victorgponce.permadeath_mod.util.BanManager;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
@@ -21,7 +22,7 @@ public class onDeathMixin {
     @Inject(method = "onDeath", at = @At("TAIL"))
     private void onDeath(DamageSource damageSource, CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-        String playerName = player.getName().toString();
+        String playerName = player.getName().getString();
         String cause = getSimpleDeathCause(damageSource);
 
         // DB connection
@@ -51,6 +52,9 @@ public class onDeathMixin {
         String insertDeathSql = "INSERT INTO Deaths (PlayerID, Cause) " +
                 "VALUES ((SELECT PlayerID FROM Players WHERE Username = '" + escapedPlayerName + "'), '" + escapedCause + "')";
         DataBaseHandler.databaseConnector(url, user, password, insertDeathSql);
+
+        // Call the CheckAndBan function
+        BanManager.checkAndBan(player);
     }
 
     @Unique
