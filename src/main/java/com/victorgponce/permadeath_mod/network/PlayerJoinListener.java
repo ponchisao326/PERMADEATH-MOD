@@ -17,7 +17,7 @@ public class PlayerJoinListener implements ServerPlayConnectionEvents.Join {
     public void onPlayReady(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
         ServerPlayerEntity player = handler.getPlayer();
 
-        String playerName = player.getName().toString();
+        String playerName = player.getName().getString();
 
         // Connection to the DB
         HashMap<Integer, String> lines;
