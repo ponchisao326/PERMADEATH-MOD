@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.mixin;
+package com.victorgponce.permadeath_mod.mixin.common;
 
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.level.ServerWorldProperties;

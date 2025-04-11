@@ -4,9 +4,11 @@
   "package": "com.victorgponce.permadeath_mod.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "onDeathMixin",
-    "OnThunderFinish",
-    "ServerWorldAccessor"
+    "common.onDeathMixin",
+    "common.OnThunderFinish",
+    "common.ServerWorldAccessor",
+    "common.OnSleepListener",
+    "day10.SpiderEffectsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
