@@ -57,6 +57,9 @@ public class ConfigFileManager {
                 // Day
                 writer.write("1");
                 writer.write(System.lineSeparator());
+                // DeathTrain
+                writer.write("false");
+                writer.write(System.lineSeparator());
                 writer.close();
             }
         } catch (IOException e) {
