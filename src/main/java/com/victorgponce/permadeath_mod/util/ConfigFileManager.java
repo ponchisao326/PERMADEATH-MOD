@@ -54,6 +54,9 @@ public class ConfigFileManager {
                 // Password
                 writer.write("your_password");
                 writer.write(System.lineSeparator());
+                // Day
+                writer.write("1");
+                writer.write(System.lineSeparator());
                 writer.close();
             }
         } catch (IOException e) {
@@ -66,6 +69,8 @@ public class ConfigFileManager {
      * 1 - JDBC <br>
      * 2 - USER <br>
      * 3 - PASSWORD <br>
+     * 4 - DAY <br>
+     * 5 - DeathTrain <br>
      */
     public static @NotNull HashMap<Integer, String> readFile() {
         HashMap<Integer, String> lines = new HashMap<>();
