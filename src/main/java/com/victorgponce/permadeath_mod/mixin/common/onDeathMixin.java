@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.mixin;
+package com.victorgponce.permadeath_mod.mixin.common;
 
 import com.victorgponce.permadeath_mod.data.DataBaseHandler;
 import com.victorgponce.permadeath_mod.util.BanManager;
@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

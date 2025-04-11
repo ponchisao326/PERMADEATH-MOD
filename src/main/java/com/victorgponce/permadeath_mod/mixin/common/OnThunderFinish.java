@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.mixin;
+package com.victorgponce.permadeath_mod.mixin.common;
 
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import com.victorgponce.permadeath_mod.util.DeathTrain;
@@ -6,6 +6,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 @Mixin(ServerWorld.class)
 public class OnThunderFinish {
 
+    @Unique
     private boolean previousThunderingState = false;
 
     @Inject(method = "tickWeather", at = @At("TAIL"))
@@ -37,6 +39,7 @@ public class OnThunderFinish {
         previousThunderingState = serverWorld.isThundering();
     }
 
+    @Unique
     private static void onThunderEnd(ServerWorld serverWorld) {
         serverWorld.getServer().getPlayerManager().broadcast(Text.literal("¡El Death Train ha llegado a su fin!")
                 .formatted(Formatting.RED, Formatting.BOLD), false);

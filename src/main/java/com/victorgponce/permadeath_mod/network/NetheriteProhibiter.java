@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod.network;
 
+import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,9 +13,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+
 public class NetheriteProhibiter implements PlayerBlockBreakEvents.Before {
     @Override
     public boolean beforeBlockBreak(World world, PlayerEntity playerEntity, BlockPos blockPos, BlockState blockState, @Nullable BlockEntity blockEntity) {
+
         Block block = blockState.getBlock();
 
         if (block == Blocks.NETHERITE_BLOCK || block == Blocks.ANCIENT_DEBRIS) {
