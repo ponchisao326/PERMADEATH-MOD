@@ -64,7 +64,7 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register((MinecraftServer server) -> {
             ServerWorld overworld = server.getWorld(World.OVERWORLD);
             WorldHolder.setOverworld(overworld);
-            System.out.println("El overworld se ha almacenado correctamente en WorldHolder.");
+            LOGGER.info("The Overworld have been stored correctly on WorldHolder.");
         });
     }
 
