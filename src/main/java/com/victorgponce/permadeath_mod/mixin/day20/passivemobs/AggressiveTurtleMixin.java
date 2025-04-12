@@ -48,11 +48,9 @@ public abstract class AggressiveTurtleMixin extends PassiveEntity {
     private static void injectAttackDamage(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
         HashMap<Integer, String> lines = ConfigFileManager.readFile();
 
-        if (lines.get(4).equals("20")) {
-            DefaultAttributeContainer.Builder builder = cir.getReturnValue();
-            // We add the attribute "attack_damage" with a predetermined value (Changeable if you want. recommended to be high to grant the difficulty)
-            builder.add(EntityAttributes.ATTACK_DAMAGE, 4.0D);
-            cir.setReturnValue(builder);
-        }
+        DefaultAttributeContainer.Builder builder = cir.getReturnValue();
+        // We add the attribute "attack_damage" with a predetermined value (Changeable if you want. recommended to be high to grant the difficulty)
+        builder.add(EntityAttributes.ATTACK_DAMAGE, 4.0D);
+        cir.setReturnValue(builder);
     }
 }
