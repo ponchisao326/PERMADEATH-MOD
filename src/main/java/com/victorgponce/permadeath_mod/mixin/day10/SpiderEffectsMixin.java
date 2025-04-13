@@ -8,6 +8,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,43 +31,41 @@ public class SpiderEffectsMixin {
             new StatusEffectInstance(StatusEffects.RESISTANCE, Integer.MAX_VALUE)       // Resistencia
     );
 
-
     /**
-     * Inject at HEAD of the addEntity method.
+     * Inject at the HEAD of the addEntity method.
      */
     @Inject(method = "addEntity", at = @At("HEAD"))
-    private void onEntitySpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
+    private void onSpiderSpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         HashMap<Integer, String> lines = ConfigFileManager.readFile();
 
-        if (lines.get(4).equals("10")) {
+        int day = Integer.parseInt(lines.get(4));
+
+        if (day == 10) {
             // Check if it's a spider
             if (entity instanceof SpiderEntity) {
                 SpiderEntity spider = (SpiderEntity) entity;
 
                 Random random = new Random();
                 Collections.shuffle(efectosDisponibles, random);
-                int cantidadEfectos = 1 + random.nextInt(3); // Genera un número entre 1 y 3
+                int cantidadEfectos = 1 + random.nextInt(3); // Generate a number between 1 & 3
 
                 for (int i = 0; i < cantidadEfectos; i++) {
                     spider.addStatusEffect(efectosDisponibles.get(i));
                 }
             }
+        } else if (day >= 20) {
+            // Check if it's a spider
+            if (entity instanceof SpiderEntity) {
+                SpiderEntity spider = (SpiderEntity) entity;
 
-            /*
-              Double the mob (It should be double the mobcap, but because of the performance I'm gonna do this)
-              If you want to modify this and set it to the mobcap, you should just search for the mobcap mixin and override
-              the default mobcap to double or search for a method in the code that override this value
-             */
-            if (entity instanceof Monster) {
-                EntityType<?> entityType = entity.getType();
-                Entity newEntity = entityType.create(entity.getWorld(), SpawnReason.NATURAL);
+                Random random = new Random();
+                Collections.shuffle(efectosDisponibles, random);
+                int cantidadEfectos = 3 + random.nextInt(3); // Generate a number between 3 & 5
 
-                if (newEntity != null) {
-                    newEntity.copyPositionAndRotation(entity);
-                    entity.getWorld().spawnEntity(newEntity);
+                for (int i = 0; i < cantidadEfectos; i++) {
+                    spider.addStatusEffect(efectosDisponibles.get(i));
                 }
             }
         }
     }
-
 }
