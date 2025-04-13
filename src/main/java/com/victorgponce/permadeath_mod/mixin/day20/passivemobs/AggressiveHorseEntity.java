@@ -32,11 +32,12 @@ public abstract class AggressiveHorseEntity extends PassiveEntity {
     private void addAggressiveGoals(CallbackInfo ci) {
         HashMap<Integer, String> lines = ConfigFileManager.readFile();
 
-        if (lines.get(4).equals("20")) {
+        int day = Integer.parseInt(lines.get(4));
+
+        if (day >= 20) {
             // We aggregate an attack goal to make the passiveEntity to follow and attack to the target
             // We make priority to 0 (highest) to force the execution
             this.goalSelector.add(0, new MeleeAttackGoal((PathAwareEntity) (Object) this, 1.2D, false));
-            // Configuramos la asignación de target:
             // We configure the assignation of the target
             this.targetSelector.add(1, new RevengeGoal(this).setGroupRevenge());
             this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
