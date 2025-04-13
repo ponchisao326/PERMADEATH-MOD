@@ -2,11 +2,14 @@ package com.victorgponce.permadeath_mod;
 
 import com.victorgponce.permadeath_mod.data.DataBaseHandler;
 import com.victorgponce.permadeath_mod.data.WorldHolder;
+import com.victorgponce.permadeath_mod.listeners.*;
 import com.victorgponce.permadeath_mod.network.NetheriteProhibiter;
 import com.victorgponce.permadeath_mod.network.PlayerJoinListener;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.MinecraftServer;
@@ -66,6 +69,15 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
             WorldHolder.setOverworld(overworld);
             LOGGER.info("The Overworld have been stored correctly on WorldHolder.");
         });
+
+        // These callbacks control if the time resets (night skip)
+        EntitySleepEvents.START_SLEEPING.register(new OnSleepEvent());
+        EntitySleepEvents.ALLOW_SLEEPING.register(new CanSleepEvent());
+        EntitySleepEvents.STOP_SLEEPING.register(new OnStopSleepEvent());
+        EntitySleepEvents.ALLOW_RESETTING_TIME.register(new FourSleepResetTimeListener());
+
+        // This callback is to show the remaining storm time on the HUD
+        ServerTickEvents.END_SERVER_TICK.register(new StormCounter());
     }
 
 }
