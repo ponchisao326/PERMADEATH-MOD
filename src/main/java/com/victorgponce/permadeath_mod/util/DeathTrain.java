@@ -10,7 +10,6 @@ import net.minecraft.util.Formatting;
 import java.io.*;
 import java.util.*;
 
-
 public class DeathTrain {
     public static void enableDeathTrain(DamageSource damageSource) {
         ServerWorld serverWorld = WorldHolder.getOverworld();
@@ -21,7 +20,8 @@ public class DeathTrain {
             int currentTime = ((ServerWorldAccessor) serverWorld).worldProperties().getThunderTime();
             int newDuration = currentTime + 72000;
             serverWorld.setWeather(0, newDuration, true, true);
-            serverWorld.getServer().getPlayerManager().broadcast(Text.literal("El deathTrain Se ha seteado a " + (newDuration / 20) / 60 / 60)
+            serverWorld.getServer().getPlayerManager().broadcast(Text.literal("El deathTrain Se ha seteado a " +
+                            (((ServerWorldAccessor) serverWorld).worldProperties().getThunderTime() / 20) + "segundos")
                     .formatted(Formatting.RED, Formatting.BOLD), false);
         } else {
             serverWorld.setWeather(0, 72000, true, true);
