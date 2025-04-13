@@ -16,14 +16,16 @@ import java.util.HashMap;
 @Mixin(LivingEntity.class)
 public class CancelMobDropsMixin {
 
-    @Inject(method = "dropLoot", at = @At("HEAD"))
+    @Inject(method = "dropLoot", at = @At("HEAD"), cancellable = true)
     private void onDropLoot(ServerWorld world, DamageSource damageSource, boolean causedByPlayer, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
         HashMap<Integer, String> lines = ConfigFileManager.readFile();
 
-        if (lines.get(4).equals("20")) {
+        int day = Integer.parseInt(lines.get(4));
+
+        if (day >= 20) {
             if (DropHelper.shouldCancelDrop(entity)) {
-                // We cancel the drop  for this entites
+                // We cancel the drop for this entites
                 ci.cancel();
             }
         }
