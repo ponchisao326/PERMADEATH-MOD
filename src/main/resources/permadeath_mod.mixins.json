@@ -21,7 +21,8 @@
     "day20.passivemobs.AggressiveSquidMixin",
     "day20.passivemobs.AggressiveStriderMixin",
     "day20.passivemobs.AggressiveTurtleMixin",
-    "day25.DeathTrainEffects"
+    "day25.DeathTrainEffects",
+    "day25.RavagerEffects"
   ],
   "injectors": {
     "defaultRequire": 1
