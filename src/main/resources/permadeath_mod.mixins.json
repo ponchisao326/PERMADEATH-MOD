@@ -7,11 +7,11 @@
     "common.onDeathMixin",
     "common.OnThunderFinish",
     "common.ServerWorldAccessor",
+    "common.SpiderEffectsMixin",
     "day10.DoubleMobsMixin",
-    "day10.SpiderEffectsMixin",
-    "day20.drops.CancelMobDropsMixin",
     "day20.CustomSkeletonsMixin",
     "day20.PhantomModifierMixin",
+    "day20.drops.CancelMobDropsMixin",
     "day20.drops.RavagerDropChanger",
     "day20.passivemobs.AggresivePiglinMixin",
     "day20.passivemobs.AggresivePigMixin",
@@ -20,7 +20,8 @@
     "day20.passivemobs.AggressiveHorseEntity",
     "day20.passivemobs.AggressiveSquidMixin",
     "day20.passivemobs.AggressiveStriderMixin",
-    "day20.passivemobs.AggressiveTurtleMixin"
+    "day20.passivemobs.AggressiveTurtleMixin",
+    "day25.DeathTrainEffects"
   ],
   "injectors": {
     "defaultRequire": 1
