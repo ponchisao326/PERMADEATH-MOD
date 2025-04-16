@@ -6,9 +6,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -18,7 +18,8 @@ import java.util.*;
 @Mixin(ServerWorld.class)
 public class DeathTrainEffects {
 
-    private List<StatusEffectInstance> efectosDisponiblesDeathTrain = Arrays.asList(
+    @Unique
+    private final List<StatusEffectInstance> efectosDisponiblesDeathTrain = Arrays.asList(
             new StatusEffectInstance(StatusEffects.STRENGTH, Integer.MAX_VALUE, 1),        // Fuerza I
             new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 1),        // Velocidad I
             new StatusEffectInstance(StatusEffects.RESISTANCE, Integer.MAX_VALUE, 1)         // Resistencia I

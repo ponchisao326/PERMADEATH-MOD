@@ -3,7 +3,6 @@ package com.victorgponce.permadeath_mod.data;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Arrays;
 import java.util.HashMap;

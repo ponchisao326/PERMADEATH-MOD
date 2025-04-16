@@ -17,8 +17,6 @@ import static com.victorgponce.permadeath_mod.data.NetheriteItemHelper.prohibite
 @Mixin(PlayerInventory.class)
 public abstract class NetheritePickUpProhibiter {
 
-    @Shadow public abstract ItemStack getStack(int slot);
-
     @Shadow @Final public PlayerEntity player;
 
     @Inject(method = "insertStack(ILnet/minecraft/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)

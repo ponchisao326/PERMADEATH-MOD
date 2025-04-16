@@ -10,6 +10,7 @@ import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.entity.Entity;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -19,7 +20,8 @@ import java.util.*;
 @Mixin(ServerWorld.class)
 public class SpiderEffectsMixin {
 
-    private List<StatusEffectInstance> efectosDisponibles = Arrays.asList(
+    @Unique
+    private final List<StatusEffectInstance> efectosDisponibles = Arrays.asList(
             new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 2),
             new StatusEffectInstance(StatusEffects.STRENGTH, Integer.MAX_VALUE, 3),
             new StatusEffectInstance(StatusEffects.JUMP_BOOST, Integer.MAX_VALUE, 4),
