@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod;
 
+import com.victorgponce.permadeath_mod.commands.PermadeathCommand;
 import com.victorgponce.permadeath_mod.data.DataBaseHandler;
 import com.victorgponce.permadeath_mod.data.WorldHolder;
 import com.victorgponce.permadeath_mod.listeners.*;
@@ -7,6 +8,7 @@ import com.victorgponce.permadeath_mod.network.NetheriteProhibiter;
 import com.victorgponce.permadeath_mod.network.PlayerJoinListener;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -78,6 +80,9 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
 
         // This callback is to show the remaining storm time on the HUD
         ServerTickEvents.END_SERVER_TICK.register(new StormCounter());
+
+        // Commands
+        CommandRegistrationCallback.EVENT.register(new PermadeathCommand());
     }
 
 }
