@@ -6,6 +6,7 @@ import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import com.victorgponce.permadeath_mod.util.DeathTrain;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -15,6 +16,9 @@ import net.minecraft.util.Formatting;
 // getString(ctx, "string")
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 // word()
 // literal("foo")
@@ -56,6 +60,7 @@ public class PermadeathCommand implements CommandRegistrationCallback {
                         .then(argument("value", IntegerArgumentType.integer())
                                 .executes(ctx -> {
                                     final int value = IntegerArgumentType.getInteger(ctx, "value");
+                                    MinecraftServer server = ctx.getSource().getServer();
 
                                     if (value % 5 != 0) {
                                         ctx.getSource().sendFeedback(() -> Text.literal("Por favor, el numero ha de ser uno de los válidos!"), false);
@@ -71,8 +76,15 @@ public class PermadeathCommand implements CommandRegistrationCallback {
                                     }
                                     try {
                                         DeathTrain.replaceLineInFile("config/PERMADEATH/config.txt", 4, String.valueOf(value));
-                                        ctx.getSource().sendFeedback(() -> Text.literal("El día ha sido cambiado, a partir de ahora es dia %s"
-                                                .formatted(value)), false);
+                                        server.getPlayerManager()
+                                                .broadcast(Text.literal("El día ha sido cambiado, a partir de ahora es dia %s. Para aplicar los cambios correctamente el servidor se reiniciará en 5 segundos"
+                                                        .formatted(value)), false);
+                                        ctx.getSource().sendFeedback(() -> Text.literal("El servidor se va a stopear, por favor inicielo de nuevo manualmente!"), false);
+                                        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+                                        scheduler.schedule(() -> {
+                                            server.execute(() -> server.stop(false));
+                                            scheduler.shutdown();
+                                        }, 5, TimeUnit.SECONDS);
                                     } catch (IOException e) {
                                         throw new RuntimeException("There was an error while reading the config file, this might not have been created correctly! " + e.getMessage(), e);
                                     }
