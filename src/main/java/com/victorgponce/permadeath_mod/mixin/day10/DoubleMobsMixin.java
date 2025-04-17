@@ -5,8 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.mob.PhantomEntity;
+import net.minecraft.entity.mob.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,7 +38,10 @@ public class DoubleMobsMixin {
         if (entity instanceof Monster && day >= 10) {
             World world = entity.getWorld();
             // Avoid dupping if the entity is generating on the nether (Dupped on tp to other dim)
-            if (world.getRegistryKey().equals(World.NETHER)) {
+            if (world.getRegistryKey().equals(World.NETHER)
+            || entity instanceof SlimeEntity
+            || entity instanceof MagmaCubeEntity
+            || entity instanceof GhastEntity) {
                 return;
             }
             if (!duplicating) {
