@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 public class BanManager {
 
     public static void checkAndBan(ServerPlayerEntity player) {
-        String playerName = player.getName().toString();
+        String playerName = player.getName().getString();
 
         // Read BD config
         HashMap<Integer, String> lines = ConfigFileManager.readFile();
