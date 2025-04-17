@@ -28,10 +28,6 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
 
     public static final String MOD_ID = "PERMADEATH-SERVER";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    public static String url;
-    public static String user;
-    public static String password;
-
     @Override
     public void onInitializeServer() {
         LOGGER.info("Initiating Permadeath (Server Side)");
