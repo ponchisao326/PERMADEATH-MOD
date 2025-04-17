@@ -24,7 +24,10 @@
     "day20.passivemobs.AggressiveStriderMixin",
     "day20.passivemobs.AggressiveTurtleMixin",
     "day25.DeathTrainEffects",
-    "day25.RavagerEffects"
+    "day25.RavagerEffects",
+    "day25.gigamobs.DemonicGhast",
+    "day25.gigamobs.GigaMagmacube",
+    "day25.gigamobs.GigaSlime"
   ],
   "injectors": {
     "defaultRequire": 1
