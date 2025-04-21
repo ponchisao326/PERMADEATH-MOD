@@ -1,7 +1,7 @@
 package com.victorgponce.permadeath_mod.mixin.common;
 
-import com.victorgponce.permadeath_mod.drops.RavagerDropDay20;
-import com.victorgponce.permadeath_mod.drops.RavagerDropDay25;
+import com.victorgponce.permadeath_mod.drops.ravager.RavagerDropDay20;
+import com.victorgponce.permadeath_mod.drops.ravager.RavagerDropDay25;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;

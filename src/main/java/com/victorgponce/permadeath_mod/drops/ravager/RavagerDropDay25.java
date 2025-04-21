@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.drops;
+package com.victorgponce.permadeath_mod.drops.ravager;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
