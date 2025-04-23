@@ -11,6 +11,9 @@ import java.util.Scanner;
 
 import static com.victorgponce.permadeath_mod.Permadeath_mod.LOGGER;
 
+/**
+ * TODO: Pass the config File (Actually .txt) to TOML
+ */
 public class ConfigFileManager {
 
     public static void createConfigFolder() {
