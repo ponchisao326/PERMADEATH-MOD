@@ -36,7 +36,7 @@ public class NetheriteGearHandler {
         int day = Integer.parseInt(lines.get(4));
 
         if (day >= 25 && day < 30) {
-            if (entity instanceof SlimeEntity slime) {
+            if (entity instanceof SlimeEntity) {
                 if (Random.create().nextInt(100) < 5) {
                     ItemStack gear = new ItemStack(Items.NETHERITE_HELMET);
                     gear.set(UNBREAKABLE, Unit.INSTANCE);
