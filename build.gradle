@@ -36,7 +36,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation("com.mysql:mysql-connector-j:9.2.0")
+    implementation("io.hotmoka:toml4j:0.7.3")
 }
 
 processResources {
