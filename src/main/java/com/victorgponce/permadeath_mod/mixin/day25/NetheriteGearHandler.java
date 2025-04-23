@@ -29,38 +29,38 @@ public class NetheriteGearHandler {
     @Unique
     private static final ComponentType<Unit> UNBREAKABLE = DataComponentTypes.UNBREAKABLE;
 
-    @Inject(method = "dropLoot", at = @At("HEAD"), cancellable = true)
-    private void onDropLoot(ServerWorld world, DamageSource damageSource, boolean causedByPlayer, CallbackInfo ci) {
+    @Inject(method = "onDeath", at = @At("TAIL"), cancellable = true)
+    private void onDropLoot(DamageSource damageSource, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
         HashMap<Integer, String> lines = ConfigFileManager.readFile();
 
         int day = Integer.parseInt(lines.get(4));
 
         if (day >= 25 && day < 30) {
-            if (entity instanceof SlimeEntity) {
-                // if (Random.create().nextInt(100) < 5) {
+            if (entity instanceof SlimeEntity slime) {
+                if (Random.create().nextInt(100) < 5) {
                     ItemStack gear = new ItemStack(Items.NETHERITE_HELMET);
                     gear.set(UNBREAKABLE, Unit.INSTANCE);
-                    new DropHandler().applyDrops(entity, gear, world);
-                //}
+                    new DropHandler().applyDrops(entity, gear);
+                }
             } else if (entity instanceof MagmaCubeEntity) {
-                // if (Random.create().nextInt(100) < 3) {
+                if (Random.create().nextInt(100) < 3) {
                     ItemStack gear = new ItemStack(Items.NETHERITE_CHESTPLATE);
                     gear.set(UNBREAKABLE, Unit.INSTANCE);
-                    new DropHandler().applyDrops(entity, gear, world);
-                //}
+                    new DropHandler().applyDrops(entity, gear);
+                }
             } else if (entity instanceof CaveSpiderEntity) {
-                // if (Random.create().nextInt(100) < 4) {
+                if (Random.create().nextInt(100) < 4) {
                     ItemStack gear = new ItemStack(Items.NETHERITE_LEGGINGS);
                     gear.set(UNBREAKABLE, Unit.INSTANCE);
-                    new DropHandler().applyDrops(entity, gear, world);
-                //}
+                    new DropHandler().applyDrops(entity, gear);
+                }
             } else if (entity instanceof GhastEntity) {
-                // if (Random.create().nextInt(100) < 2) {
+                if (Random.create().nextInt(100) < 2) {
                     ItemStack gear = new ItemStack(Items.NETHERITE_BOOTS);
                     gear.set(UNBREAKABLE, Unit.INSTANCE);
-                    new DropHandler().applyDrops(entity, gear, world);
-                //}
+                    new DropHandler().applyDrops(entity, gear);
+                }
             }
             ci.cancel();
         }

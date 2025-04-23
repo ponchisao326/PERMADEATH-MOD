@@ -13,20 +13,14 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
-// getString(ctx, "string")
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-// word()
-// literal("foo")
-import static net.minecraft.server.command.CommandManager.literal;
-// argument("bar", word())
 import static net.minecraft.server.command.CommandManager.argument;
-// Import everything in the CommandManager
-
+import static net.minecraft.server.command.CommandManager.literal;
 
 public class PermadeathCommand implements CommandRegistrationCallback {
 
@@ -47,60 +41,70 @@ public class PermadeathCommand implements CommandRegistrationCallback {
             .append(Text.literal("https://victorgponce.com")
                     .styled(style -> style.withColor(TextColor.fromFormatting(Formatting.AQUA))));
 
-
     @Override
-    public void register(CommandDispatcher<ServerCommandSource> commandDispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-        commandDispatcher.register(literal("permadeath")
-                .executes(ctx -> {
-                    ctx.getSource().sendFeedback(() -> info, false);
-                    return 1;
-                })
-                .then(literal("changeDay")
-                        .requires(source -> source.hasPermissionLevel(4))
-                        .then(argument("value", IntegerArgumentType.integer())
+    public void register(CommandDispatcher<ServerCommandSource> dispatcher,
+                         CommandRegistryAccess registryAccess,
+                         CommandManager.RegistrationEnvironment env) {
+        dispatcher.register(
+                literal("permadeath")
+                        .executes(ctx -> {
+                            ctx.getSource().sendFeedback(() -> info, false);
+                            return 1;
+                        })
+                        .then(literal("changeDay")
+                                .requires(src -> src.hasPermissionLevel(4))
+                                .then(argument("value", IntegerArgumentType.integer())
+                                        .executes(ctx -> {
+                                            int value = IntegerArgumentType.getInteger(ctx, "value");
+                                            MinecraftServer server = ctx.getSource().getServer();
+
+                                            if (value % 5 != 0) {
+                                                ctx.getSource().sendFeedback(() -> Text.literal("Por favor, el numero ha de ser uno de los válidos!"), false);
+                                                return value;
+                                            }
+
+                                            HashMap<Integer, String> lines = ConfigFileManager.readFile();
+                                            int day = Integer.parseInt(lines.get(4));
+
+                                            if (value == day) {
+                                                ctx.getSource().sendFeedback(() -> Text.literal("Ya estamos en ese dia!"), false);
+                                                return value;
+                                            }
+
+                                            try {
+                                                DeathTrain.replaceLineInFile("config/PERMADEATH/config.txt", 4, String.valueOf(value));
+                                                server.getPlayerManager()
+                                                        .broadcast(Text.literal(
+                                                                String.format(
+                                                                        "El día ha sido cambiado, a partir de ahora es dia %d. Para aplicar los cambios correctamente el servidor se reiniciará en 5 segundos", value)
+                                                        ), false);
+                                                ctx.getSource().sendFeedback(() -> Text.literal("El servidor se va a stopear, por favor inicielo de nuevo manualmente!"), false);
+
+                                                ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+                                                scheduler.schedule(() -> {
+                                                    server.execute(() -> server.stop(false));
+                                                    scheduler.shutdown();
+                                                }, 5, TimeUnit.SECONDS);
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(
+                                                        "Error leyendo el archivo de configuración: " + e.getMessage(), e
+                                                );
+                                            }
+
+                                            return value;
+                                        })
+                                )
+                        )
+                        .then(literal("getDay")
                                 .executes(ctx -> {
-                                    final int value = IntegerArgumentType.getInteger(ctx, "value");
-                                    MinecraftServer server = ctx.getSource().getServer();
-
-                                    if (value % 5 != 0) {
-                                        ctx.getSource().sendFeedback(() -> Text.literal("Por favor, el numero ha de ser uno de los válidos!"), false);
-                                        return value;
-                                    }
-
                                     HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
                                     int day = Integer.parseInt(lines.get(4));
-                                    if (value == day){
-                                        ctx.getSource().sendFeedback(() -> Text.literal("Ya estamos en ese dia!"), false);
-                                        return value;
-                                    }
-                                    try {
-                                        DeathTrain.replaceLineInFile("config/PERMADEATH/config.txt", 4, String.valueOf(value));
-                                        server.getPlayerManager()
-                                                .broadcast(Text.literal("El día ha sido cambiado, a partir de ahora es dia %s. Para aplicar los cambios correctamente el servidor se reiniciará en 5 segundos"
-                                                        .formatted(value)), false);
-                                        ctx.getSource().sendFeedback(() -> Text.literal("El servidor se va a stopear, por favor inicielo de nuevo manualmente!"), false);
-                                        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-                                        scheduler.schedule(() -> {
-                                            server.execute(() -> server.stop(false));
-                                            scheduler.shutdown();
-                                        }, 5, TimeUnit.SECONDS);
-                                    } catch (IOException e) {
-                                        throw new RuntimeException("There was an error while reading the config file, this might not have been created correctly! " + e.getMessage(), e);
-                                    }
-
-                                    return value;
+                                    ctx.getSource().sendFeedback(
+                                            () -> Text.literal("Actualmente estamos en el día " + day), false
+                                    );
+                                    return 1;
                                 })
                         )
-                )
-                .then(literal("getDay"))
-                .executes(ctx -> {
-                    HashMap<Integer, String> lines = ConfigFileManager.readFile();
-                    int day = Integer.parseInt(lines.get(4));
-
-                    ctx.getSource().sendFeedback(() -> Text.literal("Actualmente estamos en el día %s".formatted(day)), false);
-                    return 1;
-                })
         );
     }
 }
