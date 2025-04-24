@@ -85,23 +85,24 @@ public class ConfigFileManager {
     public static void initialize() {
         File cfgFile = new File(CONFIG_FILE);
         if (!cfgFile.exists()) {
-            // Abre el recurso embebido en el JAR
+            // Opens the embedded resource in the JAR
             try (InputStream in = ConfigFileManager.class
                     .getClassLoader()
                     .getResourceAsStream("config/PERMADEATH/config.toml")) {
                 if (in == null) {
-                    throw new RuntimeException("Plantilla config.toml no encontrada en resources");
+                    throw new RuntimeException("Template config.toml not found in resources (Contact with the creator and make a new issue: https://github.com/ponchisao326/PERMADEATH-MOD)");
                 }
-                // Asegura la carpeta de destino
+                // Ensures the destination folder
                 createConfigFolder();
-                // Copia bytes al disco con Java NIO
-                Files.copy(in, cfgFile.toPath());  // copia todo el InputStream al fichero :contentReference[oaicite:1]{index=1}
-                LOGGER.info("Plantilla config.toml instalada en {}", CONFIG_FILE);
+                // Copies bytes to disk using Java NIO
+                Files.copy(in, cfgFile.toPath());  // copies the entire InputStream to the file
+                LOGGER.info("Template config.toml installed in {}", CONFIG_FILE);
             } catch (IOException e) {
-                throw new RuntimeException("Error copiando config.toml desde resources", e);
+                throw new RuntimeException("Error copying config.toml from resources", e);
             }
         }
-        // Ahora lee la configuración (o la creas si readConfig() lo requiere)
+        // Now reads the configuration (or creates it if readConfig() requires)
         readConfig();
     }
+
 }
