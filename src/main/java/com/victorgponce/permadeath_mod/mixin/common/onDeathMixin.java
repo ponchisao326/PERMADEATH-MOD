@@ -31,10 +31,9 @@ public abstract class onDeathMixin {
         String cause = getSimpleDeathCause(damageSource);
 
         // DB connection
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-        String url = lines.get(1);
-        String user = lines.get(2);
-        String password = lines.get(3);
+        String url = ConfigFileManager.readConfig().getJdbc();
+        String user = ConfigFileManager.readConfig().getUser();
+        String password = ConfigFileManager.readConfig().getPassword();
 
         // Validate URL
         Pattern pattern = Pattern.compile("^jdbc:mysql://([\\w.-]+)(?::(\\d+))?/([\\w]+)$");

@@ -30,9 +30,7 @@ public class CustomSkeletonsMixin {
     @Inject(method = "addEntity", at = @At("HEAD"), cancellable = true)
     private void onEntitySpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         if (inCustomSpawn.get()) return;
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
         if (day < 20 || day >= 30) return;
 
         try {

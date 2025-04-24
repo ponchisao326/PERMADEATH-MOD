@@ -19,9 +19,8 @@ public class CancelMobDropsMixin {
     @Inject(method = "dropLoot", at = @At("HEAD"), cancellable = true)
     private void onDropLoot(ServerWorld world, DamageSource damageSource, boolean causedByPlayer, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
 
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (day >= 20) {
             if (DropHelper.shouldCancelDrop(entity)) {

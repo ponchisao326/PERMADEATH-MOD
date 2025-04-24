@@ -18,8 +18,7 @@ public class RavagerEffects {
 
     @Inject(method = "addEntity", at = @At("HEAD"))
     private void onSpiderSpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (entity instanceof RavagerEntity ravager && day >= 25) {
             ravager.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 1)); // Speed I

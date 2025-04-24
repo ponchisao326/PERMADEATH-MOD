@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod.mixin.common;
 
+import com.victorgponce.permadeath_mod.config.Config;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import com.victorgponce.permadeath_mod.util.DeathTrain;
 import net.minecraft.server.world.ServerWorld;
@@ -22,15 +23,13 @@ public class OnThunderFinish {
 
     @Inject(method = "tickWeather", at = @At("TAIL"))
     private void onTickWeather(CallbackInfo ci) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
         // We obtain the server world
         ServerWorld serverWorld = (ServerWorld) (Object) this;
 
         // We check if the previous tick was thunder and if it isn't anymore
         if (previousThunderingState && !serverWorld.isThundering()) {
             // End of Storm
-            if (lines.get(5).equals("true")) {
+            if (ConfigFileManager.readConfig().isDeathTrain()) {
                 onThunderEnd(serverWorld);
             }
         }
@@ -43,11 +42,10 @@ public class OnThunderFinish {
     private static void onThunderEnd(ServerWorld serverWorld) {
         serverWorld.getServer().getPlayerManager().broadcast(Text.literal("¡El Death Train ha llegado a su fin!")
                 .formatted(Formatting.RED, Formatting.BOLD), false);
-        try {
-            DeathTrain.replaceLineInFile("config/PERMADEATH/config.txt", 5, "false");
-        } catch (IOException e) {
-            throw new RuntimeException("There was an error writing the config file " + e.getMessage(), e);
-        }
+        Config cfg = ConfigFileManager.readConfig();
+        cfg.setDeathTrain(false);
+        // Guarda inmediatamente en el TOML:
+        ConfigFileManager.saveConfig(cfg);
     }
 
 }

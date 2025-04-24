@@ -11,9 +11,7 @@ public class FourSleepResetTimeListener implements EntitySleepEvents.AllowResett
 
     @Override
     public boolean allowResettingTime(PlayerEntity playerEntity) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (day == 10) {
             return OnSleepEvent.sleepingCount >= 4;

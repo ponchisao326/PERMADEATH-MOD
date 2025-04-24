@@ -31,9 +31,7 @@ public class DoubleMobsMixin {
      */
     @Inject(method = "addEntity", at = @At("HEAD"))
     private void onEntitySpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (entity instanceof Monster && day >= 10) {
             World world = entity.getWorld();

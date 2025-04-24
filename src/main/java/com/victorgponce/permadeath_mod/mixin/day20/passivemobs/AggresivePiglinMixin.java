@@ -19,9 +19,7 @@ public class AggresivePiglinMixin {
     // We inject in the builder to force angerTime
     @Inject(method = "<init>", at = @At("TAIL"))
     private void setDefaultAnger(EntityType<? extends ZombifiedPiglinEntity> type, World world, CallbackInfo ci) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (day >= 20) {
             ZombifiedPiglinEntity self = (ZombifiedPiglinEntity) (Object) this;
@@ -33,9 +31,7 @@ public class AggresivePiglinMixin {
     // We inject at final (TAIL) of the initCustomGoals method to force a target assignation (Player) if it doesn't already have it
     @Inject(method = "initCustomGoals", at = @At("TAIL"))
     private void forceTargetAssignment(CallbackInfo ci) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (day >= 20) {
             ZombifiedPiglinEntity self = (ZombifiedPiglinEntity) (Object) this;

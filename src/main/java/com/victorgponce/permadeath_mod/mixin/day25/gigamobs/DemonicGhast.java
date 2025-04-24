@@ -23,9 +23,7 @@ public class DemonicGhast {
 
     @Inject(method = "createGhastAttributes", at = @At("HEAD"), cancellable = true)
     private static void ghastAttributes(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
         if (day >= 25) {
             // Min health 40, Max Health 60 (40 + 0-20)
             double total = 40 + random.nextInt(21);
@@ -37,9 +35,7 @@ public class DemonicGhast {
 
     @Inject(method = "getFireballStrength", at = @At("HEAD"), cancellable = true)
     private void fireballStrength(CallbackInfoReturnable<Integer> cir) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
         if (day >= 25) {
             cir.setReturnValue(3 + random.nextInt(3)); // return the fireball value with a min value of 3 and a max value of 5 (3 + 0-2)
         }

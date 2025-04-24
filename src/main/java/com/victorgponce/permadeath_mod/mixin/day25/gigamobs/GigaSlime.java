@@ -19,9 +19,7 @@ public class GigaSlime {
 
     @Inject(method = "initialize", at = @At("TAIL"))
     public void SlimeSizeIncrease(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, CallbackInfoReturnable<EntityData> cir) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (day >= 25) {
             SlimeEntity slime = (SlimeEntity) (Object) this;

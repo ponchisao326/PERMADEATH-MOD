@@ -31,9 +31,7 @@ public class NetheriteGearHandler {
     @Inject(method = "onDeath", at = @At("TAIL"), cancellable = true)
     private void onDropLoot(DamageSource damageSource, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (day >= 25 && day < 30) {
             if (entity instanceof SlimeEntity) {

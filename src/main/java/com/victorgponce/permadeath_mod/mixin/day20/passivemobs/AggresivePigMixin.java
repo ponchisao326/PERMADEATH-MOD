@@ -30,9 +30,7 @@ public abstract class AggresivePigMixin extends PassiveEntity {
 
     @Inject(method = "initGoals", at = @At("TAIL"))
     private void addAggressiveGoals(CallbackInfo ci) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (day >= 20) {
             // We aggregate an attack goal to make the passiveEntity to follow and attack to the target
@@ -48,8 +46,6 @@ public abstract class AggresivePigMixin extends PassiveEntity {
 
     @Inject(method = "createPigAttributes", at = @At("RETURN"), cancellable = true)
     private static void injectAttackDamage(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
         DefaultAttributeContainer.Builder builder = cir.getReturnValue();
         // We add the attribute "attack_damage" with a predetermined value (Changeable if you want. recommended to be high to grant the difficulty)
         builder.add(EntityAttributes.ATTACK_DAMAGE, 4.0D);

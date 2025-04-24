@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod.network;
 
+import com.victorgponce.permadeath_mod.config.Config;
 import com.victorgponce.permadeath_mod.data.DataBaseHandler;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -20,12 +21,10 @@ public class PlayerJoinListener implements ServerPlayConnectionEvents.Join {
         String playerName = player.getName().getString();
 
         // Connection to the DB
-        HashMap<Integer, String> lines;
-        lines = ConfigFileManager.readFile();
-
-        String url = lines.get(1);
-        String user = lines.get(2);
-        String password = lines.get(3);
+        Config cfg = ConfigFileManager.readConfig();
+        String url = cfg.getJdbc();
+        String user = cfg.getUser();
+        String password = cfg.getPassword();
 
         // Regex for URL validating
         Pattern pattern = Pattern.compile("^jdbc:mysql://([\\w.-]+)(?::(\\d+))?/([\\w]+)$");

@@ -21,9 +21,7 @@ public class GigaMagmacube extends SlimeEntity {
 
     @Inject(method = "setSize", at = @At("HEAD"))
     private void setSize(int size, boolean heal, CallbackInfo ci) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (day >= 25) {
             super.setSize(16, false);

@@ -19,11 +19,8 @@ public class StormCounter implements ServerTickEvents.EndTick {
 
     @Override
     public void onEndTick(MinecraftServer minecraftServer) {
-        // Read the configuration file
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        // Check if it's thundering and the configuration allows storm tracking
-        if (minecraftServer.getOverworld().isThundering() && lines.get(5).equals("true")) {
+                // Check if it's thundering and the configuration allows storm tracking
+        if (minecraftServer.getOverworld().isThundering() && ConfigFileManager.readConfig().isDeathTrain()) {
             ServerWorld serverWorld = minecraftServer.getOverworld();
             // Get the remaining thunder time using the mixin accessor
             stormTimeRemaining = ((ServerWorldAccessor) serverWorld).worldProperties().getThunderTime();

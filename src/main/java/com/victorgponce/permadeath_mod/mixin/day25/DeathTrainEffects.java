@@ -30,10 +30,8 @@ public class DeathTrainEffects {
      */
     @Inject(method = "addEntity", at = @At("HEAD"))
     private void onSpiderSpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
-        boolean deathTrainStatus = Boolean.parseBoolean(lines.get(5));
+        int day = ConfigFileManager.readConfig().getDay();
+        boolean deathTrainStatus = ConfigFileManager.readConfig().isDeathTrain();
 
         if (day >= 25 && deathTrainStatus) {
             if (entity instanceof Monster) {

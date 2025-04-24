@@ -20,9 +20,8 @@ public class RavagerDropChanger {
     @Inject(method = "dropLoot", at = @At("HEAD"), cancellable = true)
     private void onDropLoot(ServerWorld world, DamageSource damageSource, boolean causedByPlayer, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
 
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (day >= 20 && day < 25) {
             new RavagerDropDay20().applyDrops(entity, Items.TOTEM_OF_UNDYING, world);

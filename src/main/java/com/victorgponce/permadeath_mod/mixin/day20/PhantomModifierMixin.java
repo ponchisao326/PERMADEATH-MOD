@@ -19,9 +19,7 @@ public class PhantomModifierMixin {
 
     @Inject(method = "initialize", at = @At("TAIL"))
     public void phantomSizeIncrease(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, CallbackInfoReturnable<EntityData> cir) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (day >= 20) {
             // We obtain the entity and set custom params

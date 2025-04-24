@@ -14,8 +14,7 @@ public class CanSleepEvent implements EntitySleepEvents.AllowSleeping {
 
     @Override
     public PlayerEntity.@Nullable SleepFailureReason allowSleep(PlayerEntity playerEntity, BlockPos blockPos) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         // For day 10 we let pass the sleep to make the counter increment
         // then we will force the player to wake up if they're not 4 players sleeping

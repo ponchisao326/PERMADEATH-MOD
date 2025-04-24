@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod.util;
 
+import com.victorgponce.permadeath_mod.config.Config;
 import net.minecraft.network.packet.s2c.play.SubtitleS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleFadeS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
@@ -20,10 +21,10 @@ public class BanManager {
         String playerName = player.getName().getString();
 
         // Read BD config
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-        String url = lines.get(1);
-        String user = lines.get(2);
-        String password = lines.get(3);
+        Config cfg = ConfigFileManager.readConfig();
+        String url = cfg.getJdbc();
+        String user = cfg.getUser();
+        String password = cfg.getPassword();
 
         // Validate URL format
         Pattern pattern = Pattern.compile("^jdbc:mysql://([\\w.-]+)(?::(\\d+))?/([\\w]+)$");

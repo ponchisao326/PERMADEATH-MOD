@@ -39,8 +39,7 @@ public class NetheriteItemHelper {
     );
 
     public static boolean prohibitedItems(Item item) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (day < 25) {
             return prohibitedItemList1.contains(item);

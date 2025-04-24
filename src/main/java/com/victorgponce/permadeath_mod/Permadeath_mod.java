@@ -1,6 +1,7 @@
 package com.victorgponce.permadeath_mod;
 
 import com.victorgponce.permadeath_mod.commands.PermadeathCommand;
+import com.victorgponce.permadeath_mod.config.Config;
 import com.victorgponce.permadeath_mod.data.DataBaseHandler;
 import com.victorgponce.permadeath_mod.data.WorldHolder;
 import com.victorgponce.permadeath_mod.listeners.*;
@@ -20,7 +21,6 @@ import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +28,7 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
 
     public static final String MOD_ID = "PERMADEATH-SERVER";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
     @Override
     public void onInitializeServer() {
         LOGGER.info("Initiating Permadeath (Server Side)");
@@ -36,16 +37,14 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
         LOGGER.info("Made with ❤ by Ponchisao326");
 
         // Config Folder and File creator
-        ConfigFileManager.createConfigFolder();
-        ConfigFileManager.createFile();
+        ConfigFileManager.initialize();
+        Config cfg = ConfigFileManager.readConfig();
 
-        // Connection to the DB
-        HashMap<Integer, String> lines;
-        lines = ConfigFileManager.readFile();
+        LOGGER.info("JDBC URL: {}", cfg.getJdbc());
 
-        String url = lines.get(1);
-        String user = lines.get(2);
-        String password = lines.get(3);
+        String url = cfg.getJdbc();
+        String user = cfg.getUser();
+        String password = cfg.getPassword();
 
         // Regex for URL validating
         Pattern pattern = Pattern.compile("^jdbc:mysql://([\\w.-]+)(?::(\\d+))?/([\\w]+)$");

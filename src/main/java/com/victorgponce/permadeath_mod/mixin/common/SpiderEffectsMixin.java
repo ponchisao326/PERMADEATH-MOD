@@ -34,8 +34,7 @@ public class SpiderEffectsMixin {
 
     @Inject(method = "addEntity", at = @At("HEAD"))
     private void onSpiderSpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        HashMap<Integer, String> lines = ConfigFileManager.readFile();
-        int day = Integer.parseInt(lines.get(4));
+        int day = ConfigFileManager.readConfig().getDay();
 
         if (entity instanceof SpiderEntity spider) {
             if (day >= 10 && day < 20) {
