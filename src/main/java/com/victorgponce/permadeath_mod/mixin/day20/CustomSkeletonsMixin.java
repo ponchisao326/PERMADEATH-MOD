@@ -134,6 +134,11 @@ public class CustomSkeletonsMixin {
                 break;
         }
 
+        skeleton.setEquipmentDropChance(EquipmentSlot.HEAD, 0.0F);
+        skeleton.setEquipmentDropChance(EquipmentSlot.CHEST, 0.0F);
+        skeleton.setEquipmentDropChance(EquipmentSlot.LEGS, 0.0F);
+        skeleton.setEquipmentDropChance(EquipmentSlot.FEET, 0.0F);
+        skeleton.setEquipmentDropChance(EquipmentSlot.MAINHAND, 0.0F);
         return skeleton;
     }
 }
