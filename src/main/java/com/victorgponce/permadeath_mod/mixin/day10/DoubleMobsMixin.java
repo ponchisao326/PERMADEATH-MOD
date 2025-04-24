@@ -42,6 +42,9 @@ public class DoubleMobsMixin {
             || entity instanceof GhastEntity) {
                 return;
             }
+
+            if (day >= 30 && (entity instanceof GuardianEntity || entity instanceof BlazeEntity)) return;
+
             if (!duplicating) {
                 duplicating = true;
                 try {
