@@ -23,13 +23,14 @@
     "day20.passivemobs.AggressiveSquidMixin",
     "day20.passivemobs.AggressiveStriderMixin",
     "day20.passivemobs.AggressiveTurtleMixin",
-    "day30.CustomSkeletonsMixinDay30",
     "day25.DeathTrainEffects",
     "day25.NetheriteGearHandler",
     "day25.RavagerEffects",
     "day25.gigamobs.DemonicGhast",
     "day25.gigamobs.GigaMagmacube",
-    "day25.gigamobs.GigaSlime"
+    "day25.gigamobs.GigaSlime",
+    "day30.CustomSkeletonsMixinDay30",
+    "day30.onTotemActivation"
   ],
   "injectors": {
     "defaultRequire": 1
