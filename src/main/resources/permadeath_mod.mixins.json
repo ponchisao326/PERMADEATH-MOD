@@ -23,6 +23,7 @@
     "day20.passivemobs.AggressiveSquidMixin",
     "day20.passivemobs.AggressiveStriderMixin",
     "day20.passivemobs.AggressiveTurtleMixin",
+    "day30.CustomSkeletonsMixinDay30",
     "day25.DeathTrainEffects",
     "day25.NetheriteGearHandler",
     "day25.RavagerEffects",
