@@ -29,7 +29,10 @@
     "day25.gigamobs.DemonicGhast",
     "day25.gigamobs.GigaMagmacube",
     "day25.gigamobs.GigaSlime",
+    "day30.CreeperEntityAccessor",
     "day30.CustomSkeletonsMixinDay30",
+    "day30.EntitiesTransformation",
+    "day30.EntityDeathMixin",
     "day30.onTotemActivation"
   ],
   "injectors": {
