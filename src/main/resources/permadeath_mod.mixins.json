@@ -8,6 +8,7 @@
     "common.NetheritePickUpProhibiter",
     "common.onDeathMixin",
     "common.OnThunderFinish",
+    "common.PlayerNetheriteArmorMixin",
     "common.RavagerDropChanger",
     "common.ServerWorldAccessor",
     "common.SpiderEffectsMixin",
