@@ -10,5 +10,4 @@ public interface ServerWorldAccessor {
 
     @Accessor("worldProperties")
     ServerWorldProperties worldProperties();
-
 }
