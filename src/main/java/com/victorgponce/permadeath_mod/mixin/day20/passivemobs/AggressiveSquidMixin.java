@@ -31,7 +31,7 @@ public abstract class AggressiveSquidMixin extends PassiveEntity {
     private void addAggressiveGoals(CallbackInfo ci) {
         int day = ConfigFileManager.readConfig().getDay();
 
-        if (day >= 20) {
+        if (day >= 20 && day < 30) {
             // We aggregate an attack goal to make the passiveEntity to follow and attack to the target
             // We make priority to 0 (highest) to force the execution
             this.goalSelector.add(0, new MeleeAttackGoal((PathAwareEntity) (Object) this, 1.2D, false));
