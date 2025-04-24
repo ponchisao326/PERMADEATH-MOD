@@ -1,101 +1,107 @@
 package com.victorgponce.permadeath_mod.util;
 
+import com.moandjiezana.toml.Toml;
+import com.moandjiezana.toml.TomlWriter;
+import com.victorgponce.permadeath_mod.config.Config;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.io.InputStream;
+import java.nio.file.Files;
 
 import static com.victorgponce.permadeath_mod.Permadeath_mod.LOGGER;
 
-/**
- * TODO: Pass the config File (Actually .txt) to TOML
- */
 public class ConfigFileManager {
+    private static final String CONFIG_DIR = "config/PERMADEATH";
+    private static final String CONFIG_FILE = CONFIG_DIR + "/config.toml";
 
+    /** Ensures the config/PERMADEATH folder exists */
     public static void createConfigFolder() {
-        // Config Directory Creation
-        File configDir = new File("config/PERMADEATH");
-        if (!configDir.exists()) {
-            boolean created = configDir.mkdirs();
-            if (!created) {
-                throw new RuntimeException("There was an error while creating the config folder");
-            }
+        File dir = new File(CONFIG_DIR);
+        if (!dir.exists() && !dir.mkdirs()) {
+            throw new RuntimeException("Error creating the configuration folder");
         }
     }
 
-    public static void createFile() {
-        // Main Config File Creation
-        String dir = "config/PERMADEATH/config.txt";
-        try {
-            File configFile = new File(dir);
-            if (configFile.createNewFile()) {
-                LOGGER.info("File created correctly.");
-            } else {
-                LOGGER.info("The file already exists.");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("There was an error while creating de config file (config.txt): " + e.getMessage(), e);
+    /** Creates the TOML file with default values if it doesn't exist */
+    public static void createDefaultConfig() {
+        File file = new File(CONFIG_FILE);
+        if (file.exists()) {
+            LOGGER.info("The configuration file already exists.");
+            return;
         }
 
-        try {
-            HashMap<Integer, String> lines;
-            lines = ConfigFileManager.readFile();
-            if (lines.isEmpty()) {
-                // Write the Default Config
-                FileWriter writer = new FileWriter(dir);
+        Config defaultConfig = new Config();
+        defaultConfig.setJdbc("jdbc:mysql://BDIP:3306/your_database");
+        defaultConfig.setUser("your_user");
+        defaultConfig.setPassword("your_password");
+        defaultConfig.setDay(1);
+        defaultConfig.setDeathTrain(false);
 
-                // JDBC
-                writer.write("jdbc:mysql://BDIP:3306/your_database");
-                writer.write(System.lineSeparator());
-                // User
-                writer.write("your_user");
-                writer.write(System.lineSeparator());
-                // Password
-                writer.write("your_password");
-                writer.write(System.lineSeparator());
-                // Day
-                writer.write("1");
-                writer.write(System.lineSeparator());
-                // DeathTrain
-                writer.write("false");
-                writer.write(System.lineSeparator());
-                writer.close();
-            }
+        TomlWriter writer = new TomlWriter();
+        try {
+            writer.write(defaultConfig, file);
+            LOGGER.info("Configuration file created with default values.");
         } catch (IOException e) {
-            throw new RuntimeException("There was an error writing the config file " + e.getMessage(), e);
+            throw new RuntimeException("Error writing config.toml: " + e.getMessage(), e);
         }
+    }
+
+    /** Reads and parses config.toml into a Config object */
+    public static @NotNull Config readConfig() {
+        File file = new File(CONFIG_FILE);
+        if (!file.exists()) {
+            LOGGER.warn("config.toml not found, creating one with default values...");
+            initialize();  // generates config.toml with default values
+        }
+
+        Toml toml = new Toml().read(file);
+        Config cfg = new Config();
+        cfg.setJdbc(toml.getString("jdbc"));
+        cfg.setUser(toml.getString("user"));
+        cfg.setPassword(toml.getString("password"));
+        cfg.setDay(((Long) toml.getLong("day")).intValue());
+        cfg.setDeathTrain(toml.getBoolean("deathTrain"));
+        return cfg;
     }
 
     /**
-     * Key - Value <br>
-     * 1 - JDBC <br>
-     * 2 - USER <br>
-     * 3 - PASSWORD <br>
-     * 4 - DAY <br>
-     * 5 - DeathTrain <br>
+     * Dumps the Config object to the TOML file,
+     * overwriting the entire file with new values.
      */
-    public static @NotNull HashMap<Integer, String> readFile() {
-        HashMap<Integer, String> lines = new HashMap<>();
-        String dir = "config/PERMADEATH/config.txt";
-        int acc = 0;
-
+    public static void saveConfig(@NotNull Config cfg) {
+        File file = new File(CONFIG_FILE);
+        TomlWriter writer = new TomlWriter();
         try {
-            File config = new File(dir);
-            Scanner reader = new Scanner(config);
-            while (reader.hasNextLine()) {
-                acc++;
-                String line = reader.nextLine();
-                lines.put(acc, line);
-            }
-            reader.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("There was an error while reading the config file, this might not have been created correctly! " + e.getMessage(), e);
+            writer.write(cfg, file);
+            LOGGER.info("Configuration saved to {}", CONFIG_FILE);
+        } catch (IOException e) {
+            throw new RuntimeException("Error saving config.toml: " + e.getMessage(), e);
         }
+    }
 
-        return lines;
+    /** Initializes folder and file */
+    public static void initialize() {
+        File cfgFile = new File(CONFIG_FILE);
+        if (!cfgFile.exists()) {
+            // Abre el recurso embebido en el JAR
+            try (InputStream in = ConfigFileManager.class
+                    .getClassLoader()
+                    .getResourceAsStream("config/PERMADEATH/config.toml")) {
+                if (in == null) {
+                    throw new RuntimeException("Plantilla config.toml no encontrada en resources");
+                }
+                // Asegura la carpeta de destino
+                createConfigFolder();
+                // Copia bytes al disco con Java NIO
+                Files.copy(in, cfgFile.toPath());  // copia todo el InputStream al fichero :contentReference[oaicite:1]{index=1}
+                LOGGER.info("Plantilla config.toml instalada en {}", CONFIG_FILE);
+            } catch (IOException e) {
+                throw new RuntimeException("Error copiando config.toml desde resources", e);
+            }
+        }
+        // Ahora lee la configuración (o la creas si readConfig() lo requiere)
+        readConfig();
     }
 }
