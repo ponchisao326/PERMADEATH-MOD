@@ -1,15 +1,21 @@
 package com.victorgponce.permadeath_mod.mixin.day30;
 
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
+import net.minecraft.component.type.PotionContentsComponent;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.BlazeEntity;
-import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.entity.mob.GuardianEntity;
+import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.BatEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.SquidEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.potion.Potions;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -19,6 +25,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static com.victorgponce.permadeath_mod.util.EntitiesCounter.blazeCount;
 import static com.victorgponce.permadeath_mod.util.EntitiesCounter.guardianCount;
 
@@ -27,6 +36,18 @@ public class EntitiesTransformation {
 
     @Unique
     private static final ThreadLocal<Boolean> inCustomSpawn = ThreadLocal.withInitial(() -> false);
+
+    @Unique
+    public final List<StatusEffectInstance> efectosDisponibles = Arrays.asList(
+            new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 2),
+            new StatusEffectInstance(StatusEffects.STRENGTH, Integer.MAX_VALUE, 3),
+            new StatusEffectInstance(StatusEffects.JUMP_BOOST, Integer.MAX_VALUE, 4),
+            new StatusEffectInstance(StatusEffects.GLOWING, Integer.MAX_VALUE),
+            new StatusEffectInstance(StatusEffects.REGENERATION, Integer.MAX_VALUE, 3),
+            new StatusEffectInstance(StatusEffects.INVISIBILITY, Integer.MAX_VALUE),
+            new StatusEffectInstance(StatusEffects.SLOW_FALLING, Integer.MAX_VALUE),
+            new StatusEffectInstance(StatusEffects.RESISTANCE, Integer.MAX_VALUE)
+    );
 
     @Inject(method = "addEntity", at = @At("HEAD"), cancellable = true)
     private void onEntitySpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
@@ -74,6 +95,42 @@ public class EntitiesTransformation {
             if (entity instanceof CreeperEntity creeper) {
                 CreeperEntityAccessor accessor = (CreeperEntityAccessor) creeper;
                 creeper.getDataTracker().set(accessor.charged(), true);
+            }
+
+            if (entity instanceof PillagerEntity pillager) {
+                ItemStack crossBow = new ItemStack(Items.CROSSBOW);
+                crossBow.addEnchantment(world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.QUICK_CHARGE), 10);
+
+                pillager.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, Integer.MAX_VALUE));
+                pillager.equipStack(EquipmentSlot.MAINHAND, crossBow);
+            }
+
+            if (entity instanceof SkeletonEntity skeleton) {
+                ItemStack tippedArrow = PotionContentsComponent.createStack(Items.TIPPED_ARROW, Potions.STRONG_HARMING);
+                tippedArrow.setCount(Integer.MAX_VALUE);
+                skeleton.equipStack(EquipmentSlot.OFFHAND, tippedArrow);
+                skeleton.setEquipmentDropChance(EquipmentSlot.OFFHAND, 0.0f);
+            }
+
+            if (entity instanceof ZombifiedPiglinEntity piglin) {
+                piglin.equipStack(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
+                piglin.equipStack(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
+                piglin.equipStack(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
+                piglin.equipStack(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
+            }
+
+            if (entity instanceof IronGolemEntity ironGolem) {
+                ironGolem.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 4));
+            }
+
+            if (entity instanceof EndermanEntity enderman) {
+                enderman.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, Integer.MAX_VALUE, 2));
+            }
+
+            if (entity instanceof SilverfishEntity silverfish) {
+                for (int i = 0; i < 5; i++) {
+                    silverfish.addStatusEffect(efectosDisponibles.get(i));
+                }
             }
 
         } finally {
