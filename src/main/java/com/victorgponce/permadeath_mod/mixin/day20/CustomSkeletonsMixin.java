@@ -25,17 +25,22 @@ import java.util.HashMap;
 @Mixin(ServerWorld.class)
 public class CustomSkeletonsMixin {
 
-    @Inject(method = "addEntity", at = @At("HEAD"))
+    @Unique private static final ThreadLocal<Boolean> inCustomSpawn = ThreadLocal.withInitial(() -> false);
+
+    @Inject(method = "addEntity", at = @At("HEAD"), cancellable = true)
     private void onEntitySpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
+        if (inCustomSpawn.get()) return;
         HashMap<Integer, String> lines = ConfigFileManager.readFile();
 
         int day = Integer.parseInt(lines.get(4));
+        if (day < 20 || day >= 30) return;
 
-        if (entity instanceof SpiderEntity && day >= 20) {
+        try {
+            inCustomSpawn.set(true);
             World world = entity.getWorld();
+            if (!(world instanceof ServerWorld serverWorld)) return;
 
-            // We only act on the server
-            if (world instanceof ServerWorld serverWorld) {
+            if (entity instanceof SpiderEntity) {
                 // Create a skeleton instance
                 int skeletonType = Random.create().nextInt(5);
                 SkeletonEntity skeleton = createCustomSkeleton(serverWorld, skeletonType);
@@ -47,6 +52,21 @@ public class CustomSkeletonsMixin {
                 serverWorld.spawnEntity(skeleton);
                 skeleton.startRiding(entity);
             }
+
+            if (entity instanceof SkeletonEntity skeletonEntity) {
+                cir.setReturnValue(false);
+                // Create a skeleton instance
+                int skeletonType = Random.create().nextInt(5);
+                skeletonEntity = createCustomSkeleton(serverWorld, skeletonType);
+
+                // Position the skeleton where the spider is (you can adjust an offset if desired)
+                skeletonEntity.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), entity.getYaw(), entity.getPitch());
+                // Add the skeleton as a passenger to the spider.
+                // Ensure the passenger entity is registered in the world.
+                serverWorld.spawnEntity(skeletonEntity);
+            }
+        } finally {
+            inCustomSpawn.set(false);
         }
     }
 
