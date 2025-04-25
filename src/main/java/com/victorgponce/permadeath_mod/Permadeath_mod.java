@@ -5,6 +5,7 @@ import com.victorgponce.permadeath_mod.config.Config;
 import com.victorgponce.permadeath_mod.data.DataBaseHandler;
 import com.victorgponce.permadeath_mod.data.WorldHolder;
 import com.victorgponce.permadeath_mod.listeners.*;
+import com.victorgponce.permadeath_mod.mobs.EndSpawnConfig;
 import com.victorgponce.permadeath_mod.network.NetheriteProhibiter;
 import com.victorgponce.permadeath_mod.network.PlayerJoinListener;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
@@ -32,7 +33,7 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
     @Override
     public void onInitializeServer() {
         LOGGER.info("Initiating Permadeath (Server Side)");
-        LOGGER.info("Permadeath Original autor: KernelFreeze");
+        LOGGER.info("Permadeath Original author: KernelFreeze");
         LOGGER.info("This mod is a Fan-Made mod for the PERMADEATH Series by ELRICHMC");
         LOGGER.info("Made with ❤ by Ponchisao326");
 
@@ -78,6 +79,9 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
 
         // Commands
         CommandRegistrationCallback.EVENT.register(new PermadeathCommand());
+
+        // Initialize end mobs
+        EndSpawnConfig.init();
     }
 
 }
