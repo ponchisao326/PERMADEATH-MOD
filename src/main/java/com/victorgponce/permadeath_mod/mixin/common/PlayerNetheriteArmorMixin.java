@@ -27,17 +27,17 @@ public abstract class PlayerNetheriteArmorMixin {
         EntityAttributeInstance maxHealthAttr = player.getAttributeInstance(EntityAttributes.MAX_HEALTH);
 
         if (wearingFullNetherite && !wasWearingFullNetherite) {
-            // Aplicar modificador de salud
+            // Apply health modifier
             player.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(28);
             wasWearingFullNetherite = true;
 
         } else if (!wearingFullNetherite && wasWearingFullNetherite) {
-            // Remover modificador de salud
+            // Remove health modifier
             wasWearingFullNetherite = false;
 
             player.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(20);
 
-            // Ajustar salud actual si excede el nuevo máximo
+            // Adjust current health if it exceeds the new maximum
             if (player.getHealth() > player.getMaxHealth()) {
                 player.setHealth(player.getMaxHealth());
             }
@@ -47,9 +47,9 @@ public abstract class PlayerNetheriteArmorMixin {
     @Unique
     private boolean checkFullNetheriteArmor(PlayerEntity player) {
         return isNetheritePiece(player.getEquippedStack(EquipmentSlot.HEAD), Items.NETHERITE_HELMET) &&
-               isNetheritePiece(player.getEquippedStack(EquipmentSlot.CHEST), Items.NETHERITE_CHESTPLATE) &&
-               isNetheritePiece(player.getEquippedStack(EquipmentSlot.LEGS), Items.NETHERITE_LEGGINGS) &&
-               isNetheritePiece(player.getEquippedStack(EquipmentSlot.FEET), Items.NETHERITE_BOOTS);
+                isNetheritePiece(player.getEquippedStack(EquipmentSlot.CHEST), Items.NETHERITE_CHESTPLATE) &&
+                isNetheritePiece(player.getEquippedStack(EquipmentSlot.LEGS), Items.NETHERITE_LEGGINGS) &&
+                isNetheritePiece(player.getEquippedStack(EquipmentSlot.FEET), Items.NETHERITE_BOOTS);
     }
 
     @Unique
