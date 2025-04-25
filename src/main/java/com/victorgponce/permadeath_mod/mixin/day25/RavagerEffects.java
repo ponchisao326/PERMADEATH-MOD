@@ -21,8 +21,8 @@ public class RavagerEffects {
         int day = ConfigFileManager.readConfig().getDay();
 
         if (entity instanceof RavagerEntity ravager && day >= 25) {
-            ravager.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 1)); // Speed I
-            ravager.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, Integer.MAX_VALUE, 2)); // Strength II
+            ravager.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 999999, 1)); // Speed I
+            ravager.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 999999, 2)); // Strength II
         }
     }
 

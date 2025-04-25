@@ -128,7 +128,7 @@ public class CustomSkeletonsMixinDay30 {
                 skeleton.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(20.0);
                 skeleton.setHealth(20);
 
-                skeleton.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 2));
+                skeleton.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 999999, 2));
 
                 skeleton.setCustomName(Text.of("Esqueleto Asesino"));
                 skeleton.setCustomNameVisible(true);

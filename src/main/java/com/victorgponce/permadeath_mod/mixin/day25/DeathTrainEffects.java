@@ -19,10 +19,10 @@ import java.util.*;
 public class DeathTrainEffects {
 
     @Unique
-    private final List<StatusEffectInstance> efectosDisponiblesDeathTrain = Arrays.asList(
-            new StatusEffectInstance(StatusEffects.STRENGTH, Integer.MAX_VALUE, 1),        // Fuerza I
-            new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 1),        // Velocidad I
-            new StatusEffectInstance(StatusEffects.RESISTANCE, Integer.MAX_VALUE, 1)         // Resistencia I
+    private final List<StatusEffectInstance> availableDeathTrainEffects = Arrays.asList(
+            new StatusEffectInstance(StatusEffects.STRENGTH, 999999, 1),        // Strength I
+            new StatusEffectInstance(StatusEffects.SPEED, 999999, 1),        // Speed I
+            new StatusEffectInstance(StatusEffects.RESISTANCE, 999999, 1)         // Resistance I
     );
 
     /**
@@ -35,16 +35,16 @@ public class DeathTrainEffects {
 
         if (day >= 25 && deathTrainStatus) {
             if (entity instanceof Monster) {
-                // Hacemos cast a LivingEntity para poder usar addStatusEffect
+                // Cast to LivingEntity to use addStatusEffect
                 LivingEntity living = (LivingEntity) entity;
-                for (StatusEffectInstance efecto : efectosDisponiblesDeathTrain) {
-                    // Crea una nueva instancia para evitar referencias compartidas
-                    StatusEffectInstance nuevoEfecto = new StatusEffectInstance(
-                            efecto.getEffectType(),
-                            efecto.getDuration(),
-                            efecto.getAmplifier()
+                for (StatusEffectInstance effect : availableDeathTrainEffects) {
+                    // Create a new instance to avoid shared references
+                    StatusEffectInstance newEffect = new StatusEffectInstance(
+                            effect.getEffectType(),
+                            effect.getDuration(),
+                            effect.getAmplifier()
                     );
-                    living.addStatusEffect(nuevoEfecto);
+                    living.addStatusEffect(newEffect);
                 }
             }
         }

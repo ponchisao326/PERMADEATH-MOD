@@ -22,14 +22,14 @@ public class SpiderEffectsMixin {
 
     @Unique
     private final List<StatusEffectInstance> efectosDisponibles = Arrays.asList(
-            new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 2),
-            new StatusEffectInstance(StatusEffects.STRENGTH, Integer.MAX_VALUE, 3),
-            new StatusEffectInstance(StatusEffects.JUMP_BOOST, Integer.MAX_VALUE, 4),
-            new StatusEffectInstance(StatusEffects.GLOWING, Integer.MAX_VALUE),
-            new StatusEffectInstance(StatusEffects.REGENERATION, Integer.MAX_VALUE, 3),
-            new StatusEffectInstance(StatusEffects.INVISIBILITY, Integer.MAX_VALUE),
-            new StatusEffectInstance(StatusEffects.SLOW_FALLING, Integer.MAX_VALUE),
-            new StatusEffectInstance(StatusEffects.RESISTANCE, Integer.MAX_VALUE)
+            new StatusEffectInstance(StatusEffects.SPEED, 999999, 2),
+            new StatusEffectInstance(StatusEffects.STRENGTH, 999999, 3),
+            new StatusEffectInstance(StatusEffects.JUMP_BOOST, 999999, 4),
+            new StatusEffectInstance(StatusEffects.GLOWING, 999999),
+            new StatusEffectInstance(StatusEffects.REGENERATION, 999999, 3),
+            new StatusEffectInstance(StatusEffects.INVISIBILITY, 999999),
+            new StatusEffectInstance(StatusEffects.SLOW_FALLING, 999999),
+            new StatusEffectInstance(StatusEffects.RESISTANCE, 999999)
     );
 
     @Inject(method = "addEntity", at = @At("HEAD"))

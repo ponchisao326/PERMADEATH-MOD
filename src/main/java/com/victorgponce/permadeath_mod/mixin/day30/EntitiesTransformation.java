@@ -39,14 +39,14 @@ public class EntitiesTransformation {
 
     @Unique
     public final List<StatusEffectInstance> efectosDisponibles = Arrays.asList(
-            new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 2),
-            new StatusEffectInstance(StatusEffects.STRENGTH, Integer.MAX_VALUE, 3),
-            new StatusEffectInstance(StatusEffects.JUMP_BOOST, Integer.MAX_VALUE, 4),
-            new StatusEffectInstance(StatusEffects.GLOWING, Integer.MAX_VALUE),
-            new StatusEffectInstance(StatusEffects.REGENERATION, Integer.MAX_VALUE, 3),
-            new StatusEffectInstance(StatusEffects.INVISIBILITY, Integer.MAX_VALUE),
-            new StatusEffectInstance(StatusEffects.SLOW_FALLING, Integer.MAX_VALUE),
-            new StatusEffectInstance(StatusEffects.RESISTANCE, Integer.MAX_VALUE)
+            new StatusEffectInstance(StatusEffects.SPEED, 999999, 2),
+            new StatusEffectInstance(StatusEffects.STRENGTH, 999999, 3),
+            new StatusEffectInstance(StatusEffects.JUMP_BOOST, 999999, 4),
+            new StatusEffectInstance(StatusEffects.GLOWING, 999999),
+            new StatusEffectInstance(StatusEffects.REGENERATION, 999999, 3),
+            new StatusEffectInstance(StatusEffects.INVISIBILITY, 999999),
+            new StatusEffectInstance(StatusEffects.SLOW_FALLING, 999999),
+            new StatusEffectInstance(StatusEffects.RESISTANCE, 999999)
     );
 
     @Inject(method = "addEntity", at = @At("HEAD"), cancellable = true)
@@ -66,7 +66,7 @@ public class EntitiesTransformation {
                 GuardianEntity guardian = new GuardianEntity(EntityType.GUARDIAN, serverWorld);
                 guardian.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), entity.getYaw(), entity.getPitch());
 
-                guardian.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 2));
+                guardian.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 999999, 2));
 
                 guardian.setCustomName(Text.literal("Speed Guardian"));
 
@@ -83,7 +83,7 @@ public class EntitiesTransformation {
                 BlazeEntity blaze = new BlazeEntity(EntityType.BLAZE, serverWorld);
                 blaze.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), entity.getYaw(), entity.getPitch());
 
-                blaze.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, Integer.MAX_VALUE, 2));
+                blaze.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 999999, 2));
 
                 blaze.setCustomName(Text.literal("Resistance Blaze"));
 
@@ -101,13 +101,13 @@ public class EntitiesTransformation {
                 ItemStack crossBow = new ItemStack(Items.CROSSBOW);
                 crossBow.addEnchantment(world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.QUICK_CHARGE), 10);
 
-                pillager.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, Integer.MAX_VALUE));
+                pillager.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 999999));
                 pillager.equipStack(EquipmentSlot.MAINHAND, crossBow);
             }
 
             if (entity instanceof SkeletonEntity skeleton) {
                 ItemStack tippedArrow = PotionContentsComponent.createStack(Items.TIPPED_ARROW, Potions.STRONG_HARMING);
-                tippedArrow.setCount(Integer.MAX_VALUE);
+                tippedArrow.setCount(64);
                 skeleton.equipStack(EquipmentSlot.OFFHAND, tippedArrow);
                 skeleton.setEquipmentDropChance(EquipmentSlot.OFFHAND, 0.0f);
             }
@@ -120,11 +120,11 @@ public class EntitiesTransformation {
             }
 
             if (entity instanceof IronGolemEntity ironGolem) {
-                ironGolem.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, Integer.MAX_VALUE, 4));
+                ironGolem.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 999999, 4));
             }
 
             if (entity instanceof EndermanEntity enderman) {
-                enderman.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, Integer.MAX_VALUE, 2));
+                enderman.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 999999, 2));
             }
 
             if (entity instanceof SilverfishEntity silverfish) {
