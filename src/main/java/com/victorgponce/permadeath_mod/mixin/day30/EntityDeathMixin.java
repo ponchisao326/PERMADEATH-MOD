@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod.mixin.day30;
 
+import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import com.victorgponce.permadeath_mod.util.EntitiesCounter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.BlazeEntity;
@@ -19,6 +20,9 @@ public class EntityDeathMixin {
 
         // Only process if the entity was removed due to death
         if (reason != Entity.RemovalReason.KILLED) return;
+
+        int day = ConfigFileManager.readConfig().getDay();
+        if (day < 30) return;
 
         // Check for custom Guardian
         if (entity instanceof GuardianEntity guardian) {
