@@ -34,8 +34,8 @@ public abstract class GhastTeleportMixin {
 
         // Try up to 5 different positions
         for (int i = 0; i < 5; i++) {
-            double dx = target.getX() + (world.random.nextDouble() * 20 - 10);
-            double dz = target.getZ() + (world.random.nextDouble() * 20 - 10);
+            double dx = (target.getX() + 5) + (world.random.nextDouble() * 20 + 10);
+            double dz = target.getZ() + (world.random.nextDouble() * 20 + 10);
 
             // Calculate safe height (minimum 10 blocks above the ground)
             int topY = world.getTopY(Heightmap.Type.MOTION_BLOCKING, (int) Math.floor(dx), (int) Math.floor(dz));
