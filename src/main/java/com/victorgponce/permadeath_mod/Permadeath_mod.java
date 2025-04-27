@@ -16,6 +16,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
@@ -81,6 +84,11 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
         CommandRegistrationCallback.EVENT.register(new PermadeathCommand());
 
         // Initialize end mobs
+        FabricDefaultAttributeRegistry.register(
+                EntityType.GHAST,
+                GhastEntity.createMobAttributes()
+        );
+
         EndSpawnConfig.init();
     }
 
