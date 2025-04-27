@@ -12,6 +12,7 @@
     "common.RavagerDropChanger",
     "common.ServerWorldAccessor",
     "common.SpiderEffectsMixin",
+    "day10.ChunkAreaAccessor",
     "day10.DoubleMobsMixin",
     "day20.CustomSkeletonsMixin",
     "day20.PhantomModifierMixin",
