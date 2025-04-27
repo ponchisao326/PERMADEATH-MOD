@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod.mixin.day30.end_monsters;
 
+import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -21,6 +22,8 @@ public abstract class GhastTeleportMixin {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void onAfterShoot(CallbackInfo ci) {
+        int day = ConfigFileManager.readConfig().getDay();
+        if (day < 30) return;
         if (this.cooldown != -40 || ghast.isDead()) return;
 
         LivingEntity target = ghast.getTarget();
