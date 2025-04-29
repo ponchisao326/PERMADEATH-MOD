@@ -12,7 +12,7 @@ public class EndSpawnConfig {
     public static void init() {
         int day = ConfigFileManager.readConfig().getDay();
         if (day < 30) return;
-        LOGGER.info("[PermadeathMod] Configurando spawns del End (Día: " + day + ")");
+        LOGGER.info("[PermadeathMod] Configurando spawns del End (Día: {})", day);
         // Selects all biomes in the End (Highlands, Midlands, Small Islands…)
         BiomeModifications.addSpawn(
                 BiomeSelectors.foundInTheEnd(),
@@ -20,7 +20,7 @@ public class EndSpawnConfig {
                 EntityType.GHAST,
                 65,  // peso de spawn mayor
                 1,   // mínimo 1
-                3    // máximo 1
+                3    // máximo 3
         );
 
         BiomeModifications.addSpawn(
