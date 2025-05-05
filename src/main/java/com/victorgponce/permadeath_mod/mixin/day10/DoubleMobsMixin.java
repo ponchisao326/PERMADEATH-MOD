@@ -36,11 +36,11 @@ public class DoubleMobsMixin {
     // Log mobcap info cada vez que se spawnea una entidad, usando el mobcap real
     @Inject(method = "run", at = @At("TAIL"))
     private void logMobcapAfterSpawn(net.minecraft.entity.mob.MobEntity entity, net.minecraft.world.chunk.Chunk chunk, CallbackInfo ci) {
-        SpawnGroup group = entity.getType().getSpawnGroup();
-        int day = ConfigFileManager.readConfig().getDay();
-        int baseCap = group.getCapacity() * this.spawningChunkCount / ChunkAreaAccessor.getChunkArea();
-        int mobcap = (day >= 10) ? baseCap * 2 : baseCap;
-        int current = this.groupToCount.getInt(group);
-        LOGGER.info("[PermadeathMod] Mobcap para {}: {}/{}", group.getName(), current, mobcap);
+        // SpawnGroup group = entity.getType().getSpawnGroup();
+        // int day = ConfigFileManager.readConfig().getDay();
+        // int baseCap = group.getCapacity() * this.spawningChunkCount / ChunkAreaAccessor.getChunkArea();
+        // int mobcap = (day >= 10) ? baseCap * 2 : baseCap;
+        // int current = this.groupToCount.getInt(group);
+        // LOGGER.info("[PermadeathMod] Mobcap para {}: {}/{}", group.getName(), current, mobcap);
     }
 }
