@@ -1,29 +1,28 @@
 package com.victorgponce.permadeath_mod.client.screens;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.GpuTexture;
-import net.minecraft.client.MinecraftClient;
+import com.victorgponce.permadeath_mod.client.config.ClientConfig;
+import com.victorgponce.permadeath_mod.client.util.ClientConfigFileManager;
+import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.resource.Resource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Optional;
 
 import static com.victorgponce.permadeath_mod.client.Permadeath_modClient.LOGGER;
 
 public class CustomMainMenu extends Screen {
     private TextWidget pingTextWidget;
 
-    private static final String SERVER_ADDRESS = "node-marb.ponchisaohosting.xyz:25575";
-    private static final String NODE = "node-marb.ponchisaohosting.xyz";
-    private static final int PORT = 25575;
+    ClientConfig clientConfig;
+    private static String NODE;
+    private static int PORT;
+    private static boolean SERVER_CHECK_ENABLED;
+
     private Screen parent;
     private static final Identifier menuTitleId = Identifier.of("permadeath-mod", "textures/gui/title.png");
     private static final Identifier backgroundTextureId = Identifier.of("permadeath-mod", "textures/gui/background.png");
@@ -37,6 +36,11 @@ public class CustomMainMenu extends Screen {
     public CustomMainMenu() {
         super(Text.of("Main Menu"));
         startPingThread();
+
+        clientConfig = ClientConfigFileManager.readConfig();
+        NODE = clientConfig.getServerAddress();
+        PORT = clientConfig.getServerPort();
+        SERVER_CHECK_ENABLED = clientConfig.isEnabledServerCheck();
     }
 
     // Método para iniciar el hilo de verificación del servidor
@@ -102,39 +106,44 @@ public class CustomMainMenu extends Screen {
 
         // Renderizar la textura de fondo
         assert this.client != null;
-        Optional<Resource> resourceOptional = this.client.getResourceManager().getResource(backgroundTextureId);
-        Optional<Resource> resourceTitle = this.client.getResourceManager().getResource(menuTitleId);
 
-        if (resourceOptional.isPresent() && resourceTitle.isPresent()) {
-            // La textura se cargó correctamente, renderizarla
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+        // La textura se cargó correctamente, renderizarla
+        context.drawTexture(RenderLayer::getGuiTextured, backgroundTextureId, 0, 0, 0.0F, 0.0F, this.width, this.height, this.width, this.height);
 
-            GpuTexture texture = MinecraftClient.getInstance().getTextureManager().getTexture(backgroundTextureId).getGlTexture();
-            RenderSystem.setShaderTexture(0, texture);
-            context.drawTexture(RenderLayer::getGuiTextured, backgroundTextureId, 0, 0, 0.0F, 0.0F, this.width, this.height, this.width, this.height);
+        // 2) Calculamos el scale y tamaño del título según “media-queries”
+        final int originalTitleW = 1062;
+        final int originalTitleH = 155;
 
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-            // Textura del Titulo
-            int titleWidth = 1062 / 3;
-            int titleHeight = 155 / 3;
-
-            int titleX = (this.width - titleWidth) / 2 + 3;
-            int titleY = 35;
-
-            GpuTexture texture2 = MinecraftClient.getInstance().getTextureManager().getTexture(backgroundTextureId).getGlTexture();
-            RenderSystem.setShaderTexture(0, texture2);
-            context.drawTexture(RenderLayer::getGuiTextured, menuTitleId, titleX, titleY, 0.0F, 0.0F, titleWidth, titleHeight, titleWidth, titleHeight);
-
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+        float scale;
+        if (this.width < 400) {
+            // Pantallas muy pequeñas
+            scale = 1.0f / 4.0f;
+        } else if (this.width < 800) {
+            // Pantallas de tamaño medio
+            scale = 1.0f / 3.5f;
+        } else if (this.width < 1200) {
+            // Pantallas grandes
+            scale = 1.0f / 3.0f;
         } else {
-            // La textura no se pudo cargar, imprimir un mensaje de error
-            LOGGER.info("Error: No se pudo cargar la textura de fondo.");
+            // Pantallas muy grandes (ultra-wide, etc)
+            scale = 1.0f / 2.5f;
         }
+
+        int titleWidth  = Math.round(originalTitleW * scale);
+        int titleHeight = Math.round(originalTitleH * scale);
+
+        int titleX = (this.width - titleWidth) / 2 + 3;
+        int titleY = 35;
+
+        context.drawTexture(RenderLayer::getGuiTextured, menuTitleId, titleX, titleY, 0.0F, 0.0F, titleWidth, titleHeight, titleWidth, titleHeight);
 
         // Renderizar elementos en la pantalla
         super.render(context, mouseX, mouseY, deltaTicks);
+    }
+
+    @Override
+    protected void applyBlur() {
+        // It will only blur the background, the rest remains unblurred
+        return;
     }
 }
