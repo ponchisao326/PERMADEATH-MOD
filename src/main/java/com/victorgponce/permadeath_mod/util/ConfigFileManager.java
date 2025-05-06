@@ -24,30 +24,6 @@ public class ConfigFileManager {
         }
     }
 
-    /** Creates the TOML file with default values if it doesn't exist */
-    public static void createDefaultConfig() {
-        File file = new File(CONFIG_FILE);
-        if (file.exists()) {
-            LOGGER.info("The configuration file already exists.");
-            return;
-        }
-
-        Config defaultConfig = new Config();
-        defaultConfig.setJdbc("jdbc:mysql://BDIP:3306/your_database");
-        defaultConfig.setUser("your_user");
-        defaultConfig.setPassword("your_password");
-        defaultConfig.setDay(1);
-        defaultConfig.setDeathTrain(false);
-
-        TomlWriter writer = new TomlWriter();
-        try {
-            writer.write(defaultConfig, file);
-            LOGGER.info("Configuration file created with default values.");
-        } catch (IOException e) {
-            throw new RuntimeException("Error writing config.toml: " + e.getMessage(), e);
-        }
-    }
-
     /** Reads and parses config.toml into a Config object */
     public static @NotNull Config readConfig() {
         File file = new File(CONFIG_FILE);
