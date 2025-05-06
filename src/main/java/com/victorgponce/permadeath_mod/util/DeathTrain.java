@@ -8,8 +8,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import java.io.*;
-
 public class DeathTrain {
     public static void enableDeathTrain(DamageSource damageSource) {
         ServerWorld serverWorld = WorldHolder.getOverworld();

@@ -2,7 +2,6 @@ package com.victorgponce.permadeath_mod.mixin.common;
 
 import com.victorgponce.permadeath_mod.config.Config;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
-import com.victorgponce.permadeath_mod.util.DeathTrain;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -11,9 +10,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.io.IOException;
-import java.util.HashMap;
 
 @Mixin(ServerWorld.class)
 public class OnThunderFinish {
