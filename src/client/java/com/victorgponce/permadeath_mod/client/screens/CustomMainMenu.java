@@ -163,10 +163,10 @@ public class CustomMainMenu extends Screen {
         if (SERVER_CHECK_ENABLED) {
             // Status text at bottom left
             pingTextWidget = new TextWidget(10, this.height - 20, this.textRenderer.getWidth(STATUS), 10, STATUS, this.textRenderer);
+            this.addDrawableChild(pingTextWidget);
         }
 
         this.addDrawableChild(playButton);
-        this.addDrawableChild(pingTextWidget);
         this.addDrawableChild(survivalButton);
         this.addDrawableChild(optionsButton);
         this.addDrawableChild(quitButton);
@@ -194,7 +194,9 @@ public class CustomMainMenu extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
         // Update status text
-        pingTextWidget.setMessage(STATUS);
+        if (SERVER_CHECK_ENABLED) {
+            pingTextWidget.setMessage(STATUS);
+        }
 
         // Render background
         assert this.client != null;
