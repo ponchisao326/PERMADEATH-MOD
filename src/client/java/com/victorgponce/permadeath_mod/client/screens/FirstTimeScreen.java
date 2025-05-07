@@ -30,15 +30,14 @@ public class FirstTimeScreen extends Screen {
         int centerX = this.width / 2;
         int centerY = this.height / 2;
 
-        TextFieldWidget textFieldWidget = new TextFieldWidget(this.textRenderer ,centerX, centerY, 100, 20, STATUS);
+        TextFieldWidget serverField = new TextFieldWidget(this.textRenderer ,centerX, centerY, 100, 20, STATUS);
 
         // Botón Sí (Yes)
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("gui.permadeath_mod.yes_button"), button -> {
                     clientConfig.setEnabledServerCheck(true);
                     ClientConfigFileManager.saveConfig(clientConfig);
 
-                    // String input field for server address
-                    this.addDrawableChild(textFieldWidget);
+
 
                     // this.client.setScreen(customMainMenu);
                 })
