@@ -1,5 +1,5 @@
 # Mark this as true if there is a custom server to set the "join" button to redirect to your server
-enabledServerCheck = true
+enabledServerCheck = false
 
 # Your server address
 serverAddress = "ponchisaohosting.xyz"
