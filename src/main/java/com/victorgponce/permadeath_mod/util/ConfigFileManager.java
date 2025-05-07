@@ -8,7 +8,11 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.victorgponce.permadeath_mod.Permadeath_mod.LOGGER;
 
@@ -48,12 +52,32 @@ public class ConfigFileManager {
      */
     public static void saveConfig(@NotNull Config cfg) {
         File file = new File(CONFIG_FILE);
-        TomlWriter writer = new TomlWriter();
         try {
-            writer.write(cfg, file);
-            LOGGER.info("Configuration saved to {}", CONFIG_FILE);
+            List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+
+            Map<String, String> updates = new HashMap<>();
+            updates.put("jdbc", "\"" + cfg.getJdbc() + "\"");
+            updates.put("user", "\"" + cfg.getUser() + "\"");
+            updates.put("password", "\"" + cfg.getPassword() + "\"");
+            updates.put("day", String.valueOf(cfg.getDay()));
+            updates.put("deathTrain", String.valueOf(cfg.isDeathTrain()));
+
+            for (int i = 0; i < lines.size(); i++) {
+                String line = lines.get(i).trim();
+                for (Map.Entry<String, String> entry : updates.entrySet()) {
+                    if (line.startsWith(entry.getKey())) {
+                        lines.set(i, entry.getKey() + " = " + entry.getValue());
+                        updates.remove(entry.getKey());
+                        break;
+                    }
+                }
+            }
+
+            Files.write(file.toPath(), lines, StandardCharsets.UTF_8);
+            LOGGER.info("Configuration updated in {}", CONFIG_FILE);
+
         } catch (IOException e) {
-            throw new RuntimeException("Error saving config.toml: " + e.getMessage(), e);
+            throw new RuntimeException("Error updating config.toml: " + e.getMessage(), e);
         }
     }
 

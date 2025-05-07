@@ -3,6 +3,7 @@ package com.victorgponce.permadeath_mod.client.util;
 import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
 import com.victorgponce.permadeath_mod.Permadeath_mod;
+import com.victorgponce.permadeath_mod.client.config.ClientConfig;
 import com.victorgponce.permadeath_mod.config.Config;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +11,11 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.victorgponce.permadeath_mod.client.Permadeath_modClient.LOGGER;
 
@@ -30,14 +35,33 @@ public class ClientConfigFileManager {
      * Dumps the Config object to the TOML file,
      * overwriting the entire file with new values.
      */
-    public static void saveConfig(@NotNull Config cfg) {
+    public static void saveConfig(@NotNull ClientConfig cfg) {
         File file = new File(CONFIG_FILE);
-        TomlWriter writer = new TomlWriter();
         try {
-            writer.write(cfg, file);
-            Permadeath_mod.LOGGER.info("Configuration saved to {}", CONFIG_FILE);
+            List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+
+            // Mapeo de claves con sus valores formateados correctamente
+            Map<String, String> updates = new HashMap<>();
+            updates.put("serverAddress", "\"" + cfg.getServerAddress() + "\""); // Comillas para strings
+            updates.put("serverPort", String.valueOf(cfg.getServerPort()));      // Números sin comillas
+            updates.put("enabledServerCheck", String.valueOf(cfg.isEnabledServerCheck())); // Booleanos
+
+            for (int i = 0; i < lines.size(); i++) {
+                String line = lines.get(i).trim();
+                for (Map.Entry<String, String> entry : updates.entrySet()) {
+                    if (line.startsWith(entry.getKey())) {
+                        lines.set(i, entry.getKey() + " = " + entry.getValue());
+                        updates.remove(entry.getKey());
+                        break;
+                    }
+                }
+            }
+
+            Files.write(file.toPath(), lines, StandardCharsets.UTF_8);
+            Permadeath_mod.LOGGER.info("Configuration updated in {}", CONFIG_FILE);
+
         } catch (IOException e) {
-            throw new RuntimeException("Error saving client_config.toml: " + e.getMessage(), e);
+            throw new RuntimeException("Error updating client_config.toml: " + e.getMessage(), e);
         }
     }
 
