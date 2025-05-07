@@ -3,5 +3,9 @@
   "gui.permadeath_mod.status.online": "El servidor está ONLINE",
   "gui.permadeath_mod.status.offline": "El servidor está OFFLINE",
   "gui.permadeath_mod.play": "Jugar",
-  "gui.permadeath_mod.credits": "Créditos"
+  "gui.permadeath_mod.credits": "Créditos",
+  "gui.permadeath_mod.first_time_title": "Bienvenido a Permadeath Mod",
+  "gui.permadeath_mod.first_time_message": "¿Está configurando esto para usar un servidor privado? (Presione Sí para configurar la dirección y el puerto del servidor, esto hará que el botón \"jugar\" redirija a su servidor)",
+  "gui.permadeath_mod.yes_button": "Si",
+  "gui.permadeath_mod.no_button": "No"
 }

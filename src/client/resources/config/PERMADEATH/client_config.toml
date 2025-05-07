@@ -1,4 +1,4 @@
-# Mark this as true if there is a custom server to set the "join" button to redirect to your server
+# Mark this as true if there is a custom server to set the "play" button to redirect to your server
 enabledServerCheck = false
 
 # Your server address
