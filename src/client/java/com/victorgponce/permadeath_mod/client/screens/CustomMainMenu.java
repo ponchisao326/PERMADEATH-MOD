@@ -84,9 +84,7 @@ public class CustomMainMenu extends Screen {
                 // Wait for next check
                 try {
                     Thread.sleep(PING_CHECK_INTERVAL_MS);
-                } catch (InterruptedException e) {
-                    LOGGER.error("Ping check thread interrupted: " + e.getMessage());
-                }
+                } catch (InterruptedException ignored) {}
             }
         });
         pingThread.start();
