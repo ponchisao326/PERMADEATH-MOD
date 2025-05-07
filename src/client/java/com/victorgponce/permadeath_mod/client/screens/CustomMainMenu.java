@@ -5,9 +5,14 @@ import com.victorgponce.permadeath_mod.client.util.ClientConfigFileManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ButtonTextures;
+import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.client.gui.screen.narration.Narration;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
+import net.minecraft.client.gui.widget.PressableTextWidget;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.network.CookieStorage;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.gui.DrawContext;
@@ -18,8 +23,10 @@ import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -33,6 +40,7 @@ public class CustomMainMenu extends Screen {
     private ButtonWidget survivalButton;
     private ButtonWidget optionsButton;
     private ButtonWidget quitButton;
+    private ButtonWidget creditsButton;
 
     ClientConfig clientConfig;
     private static String NODE;
@@ -42,6 +50,8 @@ public class CustomMainMenu extends Screen {
     private Screen parent;
     private static final Identifier menuTitleId = Identifier.of("permadeath-mod", "textures/gui/title.png");
     private static final Identifier backgroundTextureId = Identifier.of("permadeath-mod", "textures/gui/background.png");
+    private static final Identifier buttonId = Identifier.of("permadeath-mod", "textures/gui/button.png");
+    private static final Text MENU = Text.literal("Menu by PonchisaoHosting");
 
     private Text STATUS = Text.translatable("gui.permadeath_mod.status.offline");
     private static final long PING_CHECK_INTERVAL_MS = 5000; // Intervalo de 5 segundos
@@ -107,30 +117,43 @@ public class CustomMainMenu extends Screen {
                 ConnectScreen.connect(this, this.client, ServerAddress.parse(SERVER_ADDRESS), info, true, (CookieStorage)null);
                 buttonWidget.playDownSound(this.client.getSoundManager());
             }).dimensions(centerX - 100, centerY - 12, 200, 20).build(); // Ajustado hacia arriba
+
+            // Crear el botón de Survival
+            survivalButton = new ButtonWidget.Builder(Text.translatable("menu.singleplayer"), (buttonWidget) -> {
+                this.client.setScreen(new SelectWorldScreen(this));
+                buttonWidget.playDownSound(this.client.getSoundManager());
+            }).dimensions(centerX - 100, centerY + 12, 200, 20).build(); // Ajustado hacia abajo
         } else {
+            survivalButton = new ButtonWidget.Builder(Text.translatable("menu.singleplayer"), (buttonWidget) -> {
+                this.client.setScreen(new SelectWorldScreen(this));
+                buttonWidget.playDownSound(this.client.getSoundManager());
+            }).dimensions(centerX - 100, centerY - 12, 200, 20).build(); // Ajustado hacia arriba
+
             playButton = new ButtonWidget.Builder(Text.translatable("menu.multiplayer"), (buttonWidget) -> {
                 this.client.setScreen(new MultiplayerScreen(this));
                 buttonWidget.playDownSound(this.client.getSoundManager());
-            }).dimensions(centerX - 100, centerY - 12, 200, 20).build(); // Ajustado hacia arriba
+            }).dimensions(centerX - 100, centerY + 12, 200, 20).build(); // Ajustado hacia abajo
         }
 
-        // Crear el botón de Survival
-        survivalButton = new ButtonWidget.Builder(Text.translatable("menu.singleplayer"), (buttonWidget) -> {
-            this.client.setScreen(new SelectWorldScreen(this));
+        // Crear el botón de Créditos
+        creditsButton = new ButtonWidget.Builder(Text.translatable("gui.permadeath_mod.credits"), (buttonWidget) -> {
+            this.client.setScreen(new CustomTextCreditsScreen(() -> {
+                client.setScreen(this);
+            }));
             buttonWidget.playDownSound(this.client.getSoundManager());
-        }).dimensions(centerX - 100, centerY + 12, 200, 20).build(); // Ajustado hacia abajo
+        }).dimensions(centerX - 100, centerY + 36, 200, 20).build(); // Ajustado hacia abajo
 
         // Crear el botón de Opciones
         optionsButton = new ButtonWidget.Builder(Text.translatable("menu.options"), (buttonWidget) -> {
             MinecraftClient.getInstance().setScreen(new CustomOptionsScreen(this, this.client.options));
             buttonWidget.playDownSound(this.client.getSoundManager());
-        }).dimensions(centerX - 100, centerY + 36, 200, 20).build(); // Ajustado hacia abajo
+        }).dimensions(centerX - 100, centerY + 60, 99, 20).build(); // Ajustado hacia abajo
 
         // Crear el botón de Salir
         quitButton = new ButtonWidget.Builder(Text.translatable("menu.quit"), (buttonWidget) -> {
             this.client.scheduleStop();
             buttonWidget.playDownSound(this.client.getSoundManager());
-        }).dimensions(centerX - 100, centerY + 60, 200, 20).build(); // Ajustado hacia abajo
+        }).dimensions(centerX + 1, centerY + 60, 99, 20).build(); // Ajustado hacia abajo
 
         // Texto PingText alineado a la izquierda
         pingTextWidget = new TextWidget(10, this.height - 20, this.textRenderer.getWidth(STATUS), 10, STATUS, this.textRenderer);
@@ -140,6 +163,12 @@ public class CustomMainMenu extends Screen {
         this.addDrawableChild(survivalButton);
         this.addDrawableChild(optionsButton);
         this.addDrawableChild(quitButton);
+        this.addDrawableChild(creditsButton);
+
+        // Agregar el texto del menú en la parte inferior derecha
+        int i = this.textRenderer.getWidth(MENU);
+        int j = this.width - i - 2;
+        this.addDrawableChild(new PressableTextWidget(j - 3, this.height - 20, i, 10, MENU, (button -> Util.getOperatingSystem().open("https://victorgponce.com")), this.textRenderer));
     }
 
     @Override
@@ -169,35 +198,21 @@ public class CustomMainMenu extends Screen {
         // La textura se cargó correctamente, renderizarla
         context.drawTexture(RenderLayer::getGuiTextured, backgroundTextureId, 0, 0, 0.0F, 0.0F, this.width, this.height, this.width, this.height);
 
-        // 2) Calculamos el scale y tamaño del título según “media-queries”
-        final int originalTitleW = 1062;
-        final int originalTitleH = 155;
-
-        float scale;
-        if (this.width < 400) {
-            // Pantallas muy pequeñas
-            scale = 1.0f / 4.0f;
-        } else if (this.width < 800) {
-            // Pantallas de tamaño medio
-            scale = 1.0f / 3.5f;
-        } else if (this.width < 1200) {
-            // Pantallas grandes
-            scale = 1.0f / 3.0f;
-        } else {
-            // Pantallas muy grandes (ultra-wide, etc)
-            scale = 1.0f / 2.5f;
-        }
-
-        int titleWidth  = Math.round(originalTitleW * scale);
-        int titleHeight = Math.round(originalTitleH * scale);
-
-        int titleX = (this.width - titleWidth) / 2 + 3;
-        int titleY = 35;
-
-        context.drawTexture(RenderLayer::getGuiTextured, menuTitleId, titleX, titleY, 0.0F, 0.0F, titleWidth, titleHeight, titleWidth, titleHeight);
-
+        drawTitle(context);
         // Renderizar elementos en la pantalla
         super.render(context, mouseX, mouseY, deltaTicks);
+    }
+
+    private void drawTitle(DrawContext context) {
+        // Tu lógica de media-queries para el título:
+        final int origW = 1062, origH = 155;
+        float tScale = this.width < 400 ? 1/4f
+                : this.width < 800 ? 1/3.5f
+                : this.width < 1200 ? 1/3f
+                : 1/2.5f;
+        int w = Math.round(origW * tScale), h = Math.round(origH * tScale);
+        int x = (this.width - w) / 2 + 3, y = 35;
+        context.drawTexture(RenderLayer::getGuiTextured, menuTitleId, x, y, 0, 0, w, h, w, h);
     }
 
     @Override
