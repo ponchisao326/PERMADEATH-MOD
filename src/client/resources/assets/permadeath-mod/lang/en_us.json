@@ -2,5 +2,6 @@
   "gui.permadeath_mod.title": "Main Menu",
   "gui.permadeath_mod.status.online": "The server is ONLINE",
   "gui.permadeath_mod.status.offline": "The server is OFFLINE",
-  "gui.permadeath_mod.play": "Play"
+  "gui.permadeath_mod.play": "Play",
+  "gui.permadeath_mod.credits": "Credits"
 }
