@@ -28,7 +28,7 @@ public class TitleScreenMixin {
             // Check if it's the first
             if (currentValue) {
                 // Set the value to false
-                config.setFirstExecution(false);
+                config.setFirstExecution(true);
 
                 FirstTimeScreen firstTimeScreen = new FirstTimeScreen();
                 mc.setScreen(firstTimeScreen);

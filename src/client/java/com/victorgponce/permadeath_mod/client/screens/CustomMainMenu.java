@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import static com.victorgponce.permadeath_mod.client.Permadeath_modClient.LOGGER;
+import static net.minecraft.util.path.PathUtil.validatePath;
 
 @Environment(EnvType.CLIENT)
 public class CustomMainMenu extends Screen {
@@ -52,7 +53,8 @@ public class CustomMainMenu extends Screen {
     private static final Identifier menuTitleId = Identifier.of("permadeath-mod", "textures/gui/title.png");
     private static final Identifier backgroundTextureId = Identifier.of("permadeath-mod", "textures/gui/background.png");
     private static final Text MENU = Text.literal("Menu by PonchisaoHosting");
-    private static final ButtonTextures buttonTextures = new ButtonTextures(Identifier.of("permadeath-mod", "textures/gui/widgets/config.png"), Identifier.of("permadeath-mod", "textures/gui/widgets/config_toggle.png"));
+    private static final ButtonTextures buttonTextures = new ButtonTextures(Identifier.of("permadeath-mod", "config"),
+            Identifier.of("permadeath-mod", "config_toggle"));
 
     private Text STATUS = Text.translatable("gui.permadeath_mod.status.offline");
     private static final long PING_CHECK_INTERVAL_MS = 5000; // 5 second interval
@@ -164,11 +166,9 @@ public class CustomMainMenu extends Screen {
         }
 
         // Config button
-        configButton = new TexturedButtonWidget(centerX - 100, centerY + 84, 20, 20, buttonTextures, (button) -> {
+        configButton = new TexturedButtonWidget(centerX - 122, centerY + 60, 20, 20, buttonTextures, (button) -> {
             this.client.setScreen(new ConfiguratorScreen());
         }, Text.translatable("gui.permadeath_mod.config"));
-
-        LOGGER.info(String.valueOf(buttonTextures.get(true, true)));
 
         this.addDrawableChild(playButton);
         this.addDrawableChild(survivalButton);
