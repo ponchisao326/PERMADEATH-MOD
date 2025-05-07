@@ -66,7 +66,10 @@ public class CustomMainMenu extends Screen {
         NODE = clientConfig.getServerAddress();
         PORT = clientConfig.getServerPort();
         SERVER_CHECK_ENABLED = clientConfig.isEnabledServerCheck();
-        startPingThread();
+
+        if (SERVER_CHECK_ENABLED) {
+            startPingThread();
+        }
     }
 
     // Start server status check thread
@@ -157,8 +160,10 @@ public class CustomMainMenu extends Screen {
             buttonWidget.playDownSound(this.client.getSoundManager());
         }).dimensions(centerX + 1, centerY + 60, 99, 20).build();
 
-        // Status text at bottom left
-        pingTextWidget = new TextWidget(10, this.height - 20, this.textRenderer.getWidth(STATUS), 10, STATUS, this.textRenderer);
+        if (SERVER_CHECK_ENABLED) {
+            // Status text at bottom left
+            pingTextWidget = new TextWidget(10, this.height - 20, this.textRenderer.getWidth(STATUS), 10, STATUS, this.textRenderer);
+        }
 
         this.addDrawableChild(playButton);
         this.addDrawableChild(pingTextWidget);
