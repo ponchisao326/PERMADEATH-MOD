@@ -2,12 +2,16 @@ package com.victorgponce.permadeath_mod.client.screens;
 
 import com.victorgponce.permadeath_mod.client.config.ClientConfig;
 import com.victorgponce.permadeath_mod.client.util.ClientConfigFileManager;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.Text;
 
+@Environment(EnvType.CLIENT)
 public class ConfiguratorScreen extends Screen {
 
     private final ClientConfig clientConfig;
@@ -58,6 +62,11 @@ public class ConfiguratorScreen extends Screen {
                         this::saveConfiguration)
                 .dimensions(centerX - 50, yStart + 60, 100, 20)
                 .build());
+
+        this.client.getToastManager().add(
+                SystemToast.create(this.client, SystemToast.Type.NARRATOR_TOGGLE, Text.of("Important Info!"),
+                        Text.of("Once the Done button is pressed, the client will stop, restart it to see the changes."))
+        );
     }
 
     @Override
@@ -104,6 +113,7 @@ public class ConfiguratorScreen extends Screen {
         clientConfig.setServerAddress(serverField.getText().trim());
         clientConfig.setServerPort(port);
         ClientConfigFileManager.saveConfig(clientConfig);
+
 
         this.client.scheduleStop();
     }
