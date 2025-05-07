@@ -41,6 +41,7 @@ public class CustomMainMenu extends Screen {
     private ButtonWidget optionsButton;
     private ButtonWidget quitButton;
     private ButtonWidget creditsButton;
+    private TexturedButtonWidget configButton;
 
     ClientConfig clientConfig;
     private static String NODE;
@@ -50,8 +51,8 @@ public class CustomMainMenu extends Screen {
     private Screen parent;
     private static final Identifier menuTitleId = Identifier.of("permadeath-mod", "textures/gui/title.png");
     private static final Identifier backgroundTextureId = Identifier.of("permadeath-mod", "textures/gui/background.png");
-    private static final Identifier buttonId = Identifier.of("permadeath-mod", "textures/gui/button.png");
     private static final Text MENU = Text.literal("Menu by PonchisaoHosting");
+    private static final ButtonTextures buttonTextures = new ButtonTextures(Identifier.of("permadeath-mod", "textures/gui/widgets/config.png"), Identifier.of("permadeath-mod", "textures/gui/widgets/config_toggle.png"));
 
     private Text STATUS = Text.translatable("gui.permadeath_mod.status.offline");
     private static final long PING_CHECK_INTERVAL_MS = 5000; // 5 second interval
@@ -95,9 +96,7 @@ public class CustomMainMenu extends Screen {
         try (Socket socket = new Socket()) {
             socket.connect(new java.net.InetSocketAddress(address, port), 1000); // 1 second timeout
             return true; // Connection successful
-        } catch (IOException e) {
-            LOGGER.error("Server connection error: " + e.getMessage());
-        }
+        } catch (IOException ignored) {}
         return false; // Connection failed
     }
 
@@ -164,11 +163,19 @@ public class CustomMainMenu extends Screen {
             this.addDrawableChild(pingTextWidget);
         }
 
+        // Config button
+        configButton = new TexturedButtonWidget(centerX - 100, centerY + 84, 20, 20, buttonTextures, (button) -> {
+            this.client.setScreen(new ConfiguratorScreen());
+        }, Text.translatable("gui.permadeath_mod.config"));
+
+        LOGGER.info(String.valueOf(buttonTextures.get(true, true)));
+
         this.addDrawableChild(playButton);
         this.addDrawableChild(survivalButton);
         this.addDrawableChild(optionsButton);
         this.addDrawableChild(quitButton);
         this.addDrawableChild(creditsButton);
+        this.addDrawableChild(configButton);
 
         // Menu credit text at bottom right
         int i = this.textRenderer.getWidth(MENU);
