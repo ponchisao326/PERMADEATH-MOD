@@ -7,5 +7,8 @@
   "gui.permadeath_mod.first_time_title": "Welcome to Permadeath Mod",
   "gui.permadeath_mod.first_time_message": "Are you configuring this to use a private server? (Press Yes to configure the server address and port, this will set the \"play\" button to redirect to your server)",
   "gui.permadeath_mod.yes_button": "Yes",
-  "gui.permadeath_mod.no_button": "No"
+  "gui.permadeath_mod.no_button": "No",
+  "gui.permadeath_mod.first_time_done_button": "Done",
+  "gui.permadeath_mod.first_time_server_label": "Server URL:",
+  "gui.permadeath_mod.first_time_port_label": "Server Port:"
 }
