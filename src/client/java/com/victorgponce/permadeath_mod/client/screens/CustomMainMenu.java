@@ -6,10 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ButtonTextures;
-import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
-import net.minecraft.client.gui.screen.narration.Narration;
-import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.widget.PressableTextWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -23,7 +20,6 @@ import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
@@ -32,7 +28,6 @@ import java.io.IOException;
 import java.net.Socket;
 
 import static com.victorgponce.permadeath_mod.client.Permadeath_modClient.LOGGER;
-import static net.minecraft.util.path.PathUtil.validatePath;
 
 @Environment(EnvType.CLIENT)
 public class CustomMainMenu extends Screen {
@@ -53,12 +48,14 @@ public class CustomMainMenu extends Screen {
     private static final Identifier menuTitleId = Identifier.of("permadeath-mod", "textures/gui/title.png");
     private static final Identifier backgroundTextureId = Identifier.of("permadeath-mod", "textures/gui/background.png");
     private static final Text MENU = Text.literal("Menu by PonchisaoHosting");
-    private static final ButtonTextures buttonTextures = new ButtonTextures(Identifier.of("permadeath-mod", "config"),
+
+    private static final ButtonTextures configTextures = new ButtonTextures(Identifier.of("permadeath-mod", "config"),
             Identifier.of("permadeath-mod", "config_toggle"));
+    private static final ButtonTextures buttonTextures = new ButtonTextures(Identifier.of("permadeath-mod", "button"),
+            Identifier.of("permadeath-mod", "button"));
 
     private Text STATUS = Text.translatable("gui.permadeath_mod.status.offline");
     private static final long PING_CHECK_INTERVAL_MS = 5000; // 5 second interval
-    private long lastPingCheckTime = 0; // Last check timestamp
     private Thread pingThread; // Thread for server status checks
     private boolean stopPingThread = false; // Flag to stop the thread
 
@@ -113,7 +110,6 @@ public class CustomMainMenu extends Screen {
         int centerY = this.height / 2;
 
         if (SERVER_CHECK_ENABLED) {
-            // Create server connection button
             playButton = new ButtonWidget.Builder(Text.translatable("gui.permadeath_mod.play"), (buttonWidget) -> {
                 ServerInfo info = new ServerInfo(I18n.translate("selectServer.defaultName"), SERVER_ADDRESS, ServerInfo.ServerType.OTHER);
                 info.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.PROMPT);
@@ -166,7 +162,7 @@ public class CustomMainMenu extends Screen {
         }
 
         // Config button
-        configButton = new TexturedButtonWidget(centerX - 122, centerY + 60, 20, 20, buttonTextures, (button) -> {
+        configButton = new TexturedButtonWidget(centerX - 122, centerY + 60, 20, 20, configTextures, (button) -> {
             this.client.setScreen(new ConfiguratorScreen());
         }, Text.translatable("gui.permadeath_mod.config"));
 
