@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod.mixin.day30.dragon_battle;
 
+import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -46,6 +47,9 @@ public class DragonBuilderMixin {
 
     @Inject(method = "createDragon", at = @At("RETURN"))
     private void onDragonCreation(CallbackInfoReturnable<EnderDragonEntity> cir) {
+        int day = ConfigFileManager.readConfig().getDay();
+        if (day <= 30) return;
+
         dragon = cir.getReturnValue();
 
         if (dragon != null) {
@@ -72,6 +76,9 @@ public class DragonBuilderMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void onDragonTick(CallbackInfo ci) {
+        int day = ConfigFileManager.readConfig().getDay();
+        if (day <= 30) return;
+
         accumulatedTicks++;
 
         if (accumulatedTicks == 20*30) { // 20 ticks per second * 30 seconds
@@ -88,6 +95,9 @@ public class DragonBuilderMixin {
 
     @Inject(method = "dragonKilled", at = @At("HEAD"))
     private void onDragonKilled(EnderDragonEntity dragon, CallbackInfo ci) {
+        int day = ConfigFileManager.readConfig().getDay();
+        if (day <= 30) return;
+
         // Reset the accumulated ticks when the dragon is killed
         accumulatedTicks = 0;
 
