@@ -69,6 +69,10 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
             ServerWorld overworld = server.getWorld(World.OVERWORLD);
             WorldHolder.setOverworld(overworld);
             LOGGER.info("The Overworld have been stored correctly on WorldHolder.");
+
+            ServerWorld end = server.getWorld(World.END);
+            WorldHolder.setEnd(end);
+            LOGGER.info("The End have been stored correctly on WorldHolder.");
         });
 
         // These callbacks control if the time resets (night skip)
