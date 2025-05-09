@@ -135,6 +135,10 @@ public class CustomMainMenu extends Screen {
             }).dimensions(centerX - 100, centerY + 12, 200, 20).build();
         }
 
+        // playButton = new TexturedButtonWidget(centerX - 100, centerY - 12, 200, 20, buttonTextures, (button) -> {
+        //     this.client.setScreen(new ConfiguratorScreen());
+        // }, Text.translatable("gui.permadeath_mod.play"));
+
         // Credits button
         creditsButton = new ButtonWidget.Builder(Text.translatable("gui.permadeath_mod.credits"), (buttonWidget) -> {
             this.client.setScreen(new CustomTextCreditsScreen(() -> {
