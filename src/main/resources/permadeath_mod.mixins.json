@@ -36,6 +36,7 @@
     "day30.EntitiesTransformation",
     "day30.EntityDeathMixin",
     "day30.onTotemActivation",
+    "day30.dragon_battle.DragonBreathModifier",
     "day30.dragon_battle.DragonBuilderMixin",
     "day30.dragon_battle.EndIslandModifier",
     "day30.end_monsters.GhastTeleportMixin",
