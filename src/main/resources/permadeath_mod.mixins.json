@@ -37,6 +37,7 @@
     "day30.EntityDeathMixin",
     "day30.onTotemActivation",
     "day30.dragon_battle.DragonBuilderMixin",
+    "day30.dragon_battle.EndIslandModifier",
     "day30.end_monsters.GhastTeleportMixin",
     "day30.explosive_shulker.ShulkerDeathMixin",
     "day30.explosive_shulker.ShulkerDropModifier",
