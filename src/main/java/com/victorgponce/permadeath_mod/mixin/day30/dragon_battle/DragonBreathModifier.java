@@ -10,7 +10,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -52,14 +51,12 @@ public abstract class DragonBreathModifier {
         );
         Vec3d dir;
         if (target != null) {
-            LOGGER.info("Target found for dragon breath: {}", target);
             // Calculate direction from cloud's position to target
             double f = target.getX() - cloud.getX();
             double g = target.getBodyY(0.5) - (cloud.getBodyY(0.5) + 0.5);
             double h = target.getZ() - cloud.getZ();
             dir = new Vec3d(f, g, h);
         } else {
-            LOGGER.info("No target found for dragon breath, using dragon's look direction");
             dir = dragon.getRotationVec(1.0F);
             dir = invertMotion(dir);
         }
