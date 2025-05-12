@@ -4,11 +4,14 @@ import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.phase.SittingFlamingPhase;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -42,32 +45,44 @@ public abstract class DragonBreathModifier {
         }
 
         // Attempt to get its target (e.g., a player)
-        LivingEntity target = dragon.getAttacking();
+        PlayerEntity target = world.getClosestPlayer(
+                cloud.getX(), cloud.getY(), cloud.getZ(),
+                64,
+                false
+        );
         Vec3d dir;
         if (target != null) {
             LOGGER.info("Target found for dragon breath: {}", target);
-            // Vector from the spawn position to the center of the target
-            Vec3d vec3d = dragon.getRotationVec(1.0F);
-            double f = target.getX() - (cloud.getX() + vec3d.x * (double)4.0F);
-            double g = target.getBodyY((double)0.5F) - ((double)0.5F + cloud.getBodyY((double)0.5F));
-            double h = target.getZ() - (cloud.getZ() + vec3d.z * (double)4.0F);
+            // Calculate direction from cloud's position to target
+            double f = target.getX() - cloud.getX();
+            double g = target.getBodyY(0.5) - (cloud.getBodyY(0.5) + 0.5);
+            double h = target.getZ() - cloud.getZ();
             dir = new Vec3d(f, g, h);
         } else {
-            // If there's no valid target, use the dragon's look direction
             LOGGER.info("No target found for dragon breath, using dragon's look direction");
             dir = dragon.getRotationVec(1.0F);
-            // Invert the motion to make it go in the opposite direction
             dir = invertMotion(dir);
         }
 
-        FireballEntity fireball = new FireballEntity(world, dragon, dir.normalize(), 3 + Random.create().nextInt(3));
-        fireball.setPosition(cloud.getX() + dir.x * (double)4.0F, cloud.getBodyY((double)0.5F) + (double)0.5F, fireball.getZ() + dir.z * (double)4.0F);
+        FireballEntity fireball = new FireballEntity(world, dragon, dir.normalize().multiply(2.0), 3 + Random.create().nextInt(3));
+        fireball.setPosition(
+                cloud.getX(),
+                cloud.getBodyY(0.5) + 0.5,
+                cloud.getZ()
+        );
 
         // Launch it and discard the original cloud
         world.spawnEntity(fireball);
         return true;
     }
 
+    /**
+     * Inverts the motion vector of the fireball.
+     *
+     * @param vec The original motion vector.
+     * @return The inverted motion vector.
+     */
+    @Unique
     private Vec3d invertMotion(Vec3d vec) {
         return new Vec3d(-vec.x, vec.y, -vec.z);
     }
