@@ -3,6 +3,7 @@ package com.victorgponce.permadeath_mod.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.victorgponce.permadeath_mod.config.Config;
+import com.victorgponce.permadeath_mod.data.BinaryServerDataHandler;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
@@ -96,6 +97,42 @@ public class PermadeathCommand implements CommandRegistrationCallback {
                                     int day = ConfigFileManager.readConfig().getDay();
                                     ctx.getSource().sendFeedback(
                                             () -> Text.literal("Actualmente estamos en el día " + day), false
+                                    );
+                                    return 1;
+                                })
+                        )
+                        .then(literal("enableDoubleShulkerShells")
+                        .requires(src -> src.hasPermissionLevel(4))
+                                .executes(ctx -> {
+                                    // Obtain instance
+                                    BinaryServerDataHandler config = BinaryServerDataHandler.getInstance();
+                                    if (config.getDoubleShulkerShell()) {
+                                        ctx.getSource().sendFeedback(
+                                                () -> Text.literal("Double Shulker Shells ya está habilitado!"), false
+                                        );
+                                        return 1;
+                                    }
+                                    config.setDoubleShulkerShell();
+                                    ctx.getSource().sendFeedback(
+                                            () -> Text.literal("El valor de Double Shulker Shells ha sido cambiado a " + config.getDoubleShulkerShell()), false
+                                    );
+                                    return 1;
+                                })
+                        )
+                        .then(literal("disableDoubleShulkerShells")
+                                .requires(src -> src.hasPermissionLevel(4))
+                                .executes(ctx -> {
+                                    // Obtain instance
+                                    BinaryServerDataHandler config = BinaryServerDataHandler.getInstance();
+                                    if (!config.getDoubleShulkerShell()) {
+                                        ctx.getSource().sendFeedback(
+                                                () -> Text.literal("Double Shulker Shells ya está deshabilitado!"), false
+                                        );
+                                        return 1;
+                                    }
+                                    config.setDoubleShulkerShell();
+                                    ctx.getSource().sendFeedback(
+                                            () -> Text.literal("El valor de Double Shulker Shells ha sido cambiado a " + config.getDoubleShulkerShell()), false
                                     );
                                     return 1;
                                 })
