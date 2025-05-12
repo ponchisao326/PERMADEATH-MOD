@@ -92,17 +92,4 @@ public class DragonBuilderMixin {
             }
         }
     }
-
-    @Inject(method = "dragonKilled", at = @At("HEAD"))
-    private void onDragonKilled(EnderDragonEntity dragon, CallbackInfo ci) {
-        int day = ConfigFileManager.readConfig().getDay();
-        if (day <= 30) return;
-
-        // Reset the accumulated ticks when the dragon is killed
-        accumulatedTicks = 0;
-
-        if (dragon.getUuid().equals(this.dragonUuid)) {
-        }
-    }
-
 }
