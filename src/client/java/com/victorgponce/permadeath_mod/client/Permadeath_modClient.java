@@ -4,8 +4,6 @@ import net.fabricmc.api.ClientModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 public class Permadeath_modClient implements ClientModInitializer {
 
     public static final String MOD_ID = "PERMADEATH-CLIENT";
