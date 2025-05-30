@@ -43,6 +43,8 @@
     "day30.explosive_shulker.ShulkerDeathMixin",
     "day30.explosive_shulker.ShulkerDropModifier",
     "day30.explosive_shulker.ShulkerProjectileMixin",
+    "day40.DisableHotbarSlotMixin",
+    "day40.PlayerInventoryMixin",
     "day40.SlotRemoverMixin"
   ],
   "injectors": {

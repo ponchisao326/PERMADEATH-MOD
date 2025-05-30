@@ -7,7 +7,7 @@
     "GameMenuMixin",
     "MinecraftClientMixin",
     "TitleScreenMixin",
-    "Day30Inventory"
+    "ClientSlotClampMixin"
   ],
   "injectors": {
     "defaultRequire": 1
