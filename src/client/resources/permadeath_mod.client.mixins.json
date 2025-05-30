@@ -6,7 +6,8 @@
   "client": [
     "GameMenuMixin",
     "MinecraftClientMixin",
-    "TitleScreenMixin"
+    "TitleScreenMixin",
+    "Day30Inventory"
   ],
   "injectors": {
     "defaultRequire": 1

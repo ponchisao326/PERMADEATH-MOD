@@ -17,6 +17,7 @@ public class BinaryDataHandler {
 
     private static BinaryDataHandler instance;
     private boolean firstExecution;
+    private int day;
     private final Path configPath;
 
     private BinaryDataHandler() {
@@ -48,12 +49,14 @@ public class BinaryDataHandler {
         if (!Files.exists(configPath)) {
             // Archivo no existe, usar valor por defecto
             firstExecution = true;
+            day = 0; // Valor por defecto para el día
             save();
             return;
         }
 
         try (DataInputStream dis = new DataInputStream(Files.newInputStream(configPath))) {
             firstExecution = dis.readBoolean();
+            day = dis.readInt();
         } catch (IOException e) {
             LOGGER.error("Error cargando configuración: " + e.getMessage());
         }
@@ -62,6 +65,7 @@ public class BinaryDataHandler {
     public void save() {
         try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(configPath))) {
             dos.writeBoolean(firstExecution);
+            dos.writeInt(day);
         } catch (IOException e) {
             LOGGER.error("Error guardando configuración: " + e.getMessage());
         }
@@ -75,5 +79,12 @@ public class BinaryDataHandler {
     public void setFirstExecution(boolean value) {
         this.firstExecution = value;
         save(); // Auto-guardado al modificar el valor
+    }
+
+    public int getDay() {return day;}
+
+    public void setDay(int day) {
+        this.day = day;
+        save(); // Auto-guardado al modificar el día
     }
 }

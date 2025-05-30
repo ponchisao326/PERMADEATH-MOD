@@ -5,6 +5,7 @@ import com.victorgponce.permadeath_mod.data.DataBaseHandler;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -38,5 +39,14 @@ public class PlayerJoinListener implements ServerPlayConnectionEvents.Join {
                 "ON DUPLICATE KEY UPDATE LastConnection = CURRENT_TIMESTAMP";;
 
         DataBaseHandler.databaseConnector(url, user, password, sql);
+
+        DayPacketPayloadHandler(player, server);
+    }
+
+    private void DayPacketPayloadHandler(ServerPlayerEntity player, MinecraftServer server) {
+        int day = ConfigFileManager.readConfig().getDay();
+
+        DayPacketS2CPayload payload = new DayPacketS2CPayload(day);
+        ServerPlayNetworking.send(player, payload);
     }
 }

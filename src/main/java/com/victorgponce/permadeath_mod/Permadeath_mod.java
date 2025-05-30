@@ -8,6 +8,7 @@ import com.victorgponce.permadeath_mod.listeners.*;
 import com.victorgponce.permadeath_mod.mobs.EndSpawnConfig;
 import com.victorgponce.permadeath_mod.network.NetheriteProhibiter;
 import com.victorgponce.permadeath_mod.network.PlayerJoinListener;
+import com.victorgponce.permadeath_mod.network.DayPacketS2CPayload;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -15,6 +16,7 @@ import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.EntityType;
@@ -94,6 +96,8 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
         );
 
         EndSpawnConfig.init();
+
+        PayloadTypeRegistry.playS2C().register(DayPacketS2CPayload.ID, DayPacketS2CPayload.CODEC);
     }
 
 }
