@@ -1,51 +1,45 @@
 package com.victorgponce.permadeath_mod.mixin.day40;
 
-
-import net.minecraft.entity.player.PlayerInventory;
+import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.collection.DefaultedList;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerInventory.class)
 public class PlayerInventoryMixin {
+    // Shadow the `main` inventory list (slots 0–35, where 0–8 is the hotbar).
+    @Shadow private DefaultedList<ItemStack> main;
 
     /**
-     * Interceptamos cualquier inserción de ItemStack en el inventario
-     * (incluye recogida de ítems del suelo, shulkers, cofres, etc.).
+     * Override getEmptySlot() so that it never returns any index in [4..9].
+     * In PlayerInventory, getEmptySlot() is used by insertStack(slot = -1,…)
+     * and also indirectly by addStack(…) to find a free slot. By injecting
+     * here, we force all “auto‐insert” logic to ignore indices 4 through 9.
      */
     @Inject(
-            method = "insertStack(Lnet/minecraft/item/ItemStack;)Z",
+            method = "getEmptySlot",
             at = @At("HEAD"),
             cancellable = true
     )
-    private void onInsertStack(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        PlayerInventory inv = (PlayerInventory) (Object) this;
-
-        // 1. Buscamos ranura válida fuera de 5–9
-        int slot = findValidSlot(inv, stack);
-        if (slot == -1) {
-            // no hay espacio válido → cancelamos la inserción
-            cir.setReturnValue(false);
-        } else {
-            // 2. Insertamos el stack manualmente y cancelamos el método original
-            inv.setStack(slot, stack);
-            cir.setReturnValue(true);
-        }
-    }
-
-    private int findValidSlot(PlayerInventory inv, ItemStack stack) {
-        // recorremos todas las ranuras del inventario
-        for (int i = 0; i < inv.size(); i++) {
-            // saltamos las slots 4–9
+    private void getEmptySlot(CallbackInfoReturnable<Integer> cir) {
+        int day = ConfigFileManager.readConfig().getDay();
+        if (day < 40) return;
+        for (int i = 0; i < this.main.size(); i++) {
+            // Skip slots 4..9 entirely:
             if (i >= 4 && i <= 9) continue;
 
-            ItemStack inSlot = inv.getStack(i);
-            if (inSlot.isEmpty()) {
-                return i;
+            ItemStack stack = this.main.get(i);
+            if (stack.isEmpty()) {
+                cir.setReturnValue(i);
+                return;
             }
         }
-        return -1;
+        // If no valid slot outside 4..9 was empty, return –1 (just like vanilla)
+        cir.setReturnValue(-1);
     }
 }
