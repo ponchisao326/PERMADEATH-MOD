@@ -28,7 +28,7 @@ public abstract class ClientSlotClampMixin {
         if (config.getDay() < 40) return;
 
         // 1) Clampeamos el valor de slot a [0..3]
-        int clamped = slot < 4 ? slot : 3;
+        int clamped = slot == 8 ? 8 : slot;
         // 2) Asignamos directamente al campo shadow, sin llamar al método otra vez
         this.selectedSlot = clamped;
         // 3) Cancelamos para evitar la implementación original

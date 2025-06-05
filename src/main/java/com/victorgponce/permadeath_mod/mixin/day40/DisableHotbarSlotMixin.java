@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static com.victorgponce.permadeath_mod.Permadeath_mod.LOGGER;
+
 @Mixin(Slot.class)
 public abstract class DisableHotbarSlotMixin {
     // Shadoweamos el inventario y el índice del slot
@@ -29,11 +31,14 @@ public abstract class DisableHotbarSlotMixin {
     private void onCanInsert(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         int day = ConfigFileManager.readConfig().getDay();
         if (day < 40) return;
+
         Inventory inv = this.inventory;
         int idx = this.getIndex();
-        // si es un PlayerInventory y estamos en hotbar ≥ 4, bloqueamos
-        if (inv instanceof PlayerInventory && idx >= 4 && idx <= 8) {
-            cir.setReturnValue(false);
+        // If is a player inventory and the index is one of the last columns of the inventory or second hand
+        if (inv instanceof PlayerInventory) {
+            if (idx == 8 || idx == 17 || idx == 26 || idx == 35 || idx == 40) {
+                cir.setReturnValue(false);
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ public abstract class SlotRemoverMixin {
     private static int modifyHotbarSize(int original) {
         int day = ConfigFileManager.readConfig().getDay();
         if (day < 40) return original;
-        return 4;
+        return 8;
     }
 
     // 2. Limit hotbar index
@@ -21,6 +21,6 @@ public abstract class SlotRemoverMixin {
     private static int modifyHotbarValidation(int original) {
         int day = ConfigFileManager.readConfig().getDay();
         if (day < 40) return original;
-        return 4;
+        return 8;
     }
 }

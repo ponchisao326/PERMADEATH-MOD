@@ -30,8 +30,11 @@ public class PlayerInventoryMixin {
         int day = ConfigFileManager.readConfig().getDay();
         if (day < 40) return;
         for (int i = 0; i < this.main.size(); i++) {
-            // Skip slots 4..9 entirely:
-            if (i >= 4 && i <= 9) continue;
+            // Skip slots from the last row from all the inventory
+            if (i == 8) continue;
+            if (i == 17) continue;
+            if (i == 26) continue;
+            if (i == 35) continue;
 
             ItemStack stack = this.main.get(i);
             if (stack.isEmpty()) {
