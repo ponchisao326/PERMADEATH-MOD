@@ -10,6 +10,7 @@ import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.GhastEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.feature.EndPortalFeature;
@@ -34,6 +35,7 @@ public class DragonBuilderMixin {
     @Shadow @Nullable private UUID dragonUuid;
     @Shadow @Final private static Logger LOGGER;
     @Shadow @Nullable private List<EndCrystalEntity> crystals;
+    @Shadow @Final private ServerWorld world;
     EnderDragonEntity dragon;
     private static int accumulatedTicks = 0;
 
@@ -79,17 +81,24 @@ public class DragonBuilderMixin {
         int day = ConfigFileManager.readConfig().getDay();
         if (day <= 30) return;
 
-        accumulatedTicks++;
-
-        if (accumulatedTicks == 20*30) { // 20 ticks per second * 30 seconds
-            accumulatedTicks = 0;
-            Vec3d dragonPosition = dragon.getPos();
-
-            for (int i = 0; i < 2; i++) {
-                GhastEntity ghast = new GhastEntity(EntityType.GHAST, dragon.getWorld());
-                ghast.setPos(dragonPosition.x, dragonPosition.y, dragonPosition.z);
-                dragon.getWorld().spawnEntity(ghast);
+        // Immediately bail if our `dragon` field is still null:
+        if (dragon == null) {
+            EnderDragonEntity dragon = (EnderDragonEntity) this.world.getEntity(dragonUuid);
+            if (dragon != null) {
+                this.dragon = dragon;
+            }
+        } else {
+            accumulatedTicks++;
+            if (accumulatedTicks == 20 * 30) {
+                accumulatedTicks = 0;
+                Vec3d dragonPosition = dragon.getPos();
+                for (int i = 0; i < 2; i++) {
+                    GhastEntity ghast = new GhastEntity(EntityType.GHAST, dragon.getWorld());
+                    ghast.setPos(dragonPosition.x, dragonPosition.y, dragonPosition.z);
+                    dragon.getWorld().spawnEntity(ghast);
+                }
             }
         }
     }
+
 }
