@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.mixin.day40;
+package com.victorgponce.permadeath_mod.mixin.day40.playerinventory;
 
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.entity.player.PlayerInventory;
@@ -11,8 +11,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import static com.victorgponce.permadeath_mod.Permadeath_mod.LOGGER;
 
 @Mixin(Slot.class)
 public abstract class DisableHotbarSlotMixin {

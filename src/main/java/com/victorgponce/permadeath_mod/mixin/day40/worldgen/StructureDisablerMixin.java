@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.mixin.day40;
+package com.victorgponce.permadeath_mod.mixin.day40.worldgen;
 
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -21,8 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 import java.util.Set;
-
-import static com.victorgponce.permadeath_mod.Permadeath_mod.LOGGER;
 
 @Mixin(ChunkGenerator.class)
 public class StructureDisablerMixin {

@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.mixin.day40;
+package com.victorgponce.permadeath_mod.mixin.day40.playerinventory;
 
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.item.ItemStack;
