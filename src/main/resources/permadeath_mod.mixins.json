@@ -47,6 +47,7 @@
     "day40.playerinventory.DisableHotbarSlotMixin",
     "day40.playerinventory.PlayerInventoryMixin",
     "day40.playerinventory.SlotRemoverMixin",
+    "day40.worldgen.EndShipGeneratorMixin",
     "day40.worldgen.MapTradeDisablerMixin",
     "day40.worldgen.StructureDisablerMixin",
     "day40.worldgen.StructureLocateOverwriteMixin"
