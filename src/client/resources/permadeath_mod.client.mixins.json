@@ -4,12 +4,15 @@
   "package": "com.victorgponce.permadeath_mod.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "GameMenuMixin",
-    "MinecraftClientMixin",
-    "TitleScreenMixin",
-    "ClientSlotClampMixin"
+    "day40.ClientSlotClampMixin",
+    "gui.GameMenuMixin",
+    "gui.MinecraftClientMixin",
+    "gui.TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "day40.MapIconDisablerMixin"
+  ]
 }

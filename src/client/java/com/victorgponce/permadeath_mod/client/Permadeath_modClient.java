@@ -33,7 +33,5 @@ public class Permadeath_modClient implements ClientModInitializer {
         });
 
         LOGGER.info("Current day from binary: " + config.getDay());
-
-
     }
 }

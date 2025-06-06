@@ -5,6 +5,7 @@ import com.victorgponce.permadeath_mod.config.Config;
 import com.victorgponce.permadeath_mod.data.DataBaseHandler;
 import com.victorgponce.permadeath_mod.data.WorldHolder;
 import com.victorgponce.permadeath_mod.listeners.*;
+import com.victorgponce.permadeath_mod.loot_tables.LootTableOverwriter;
 import com.victorgponce.permadeath_mod.mobs.EndSpawnConfig;
 import com.victorgponce.permadeath_mod.network.NetheriteProhibiter;
 import com.victorgponce.permadeath_mod.network.PlayerJoinListener;
@@ -98,6 +99,9 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
         EndSpawnConfig.init();
 
         PayloadTypeRegistry.playS2C().register(DayPacketS2CPayload.ID, DayPacketS2CPayload.CODEC);
+
+        // Register the LootTableOverwriter
+        LootTableOverwriter.register();
     }
 
 }

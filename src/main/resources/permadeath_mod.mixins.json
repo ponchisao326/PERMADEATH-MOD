@@ -44,8 +44,11 @@
     "day30.explosive_shulker.ShulkerDropModifier",
     "day30.explosive_shulker.ShulkerProjectileMixin",
     "day40.DisableHotbarSlotMixin",
+    "day40.MapTradeDisablerMixin",
     "day40.PlayerInventoryMixin",
-    "day40.SlotRemoverMixin"
+    "day40.SlotRemoverMixin",
+    "day40.StructureDisablerMixin",
+    "day40.StructureLocateOverwriteMixin"
   ],
   "injectors": {
     "defaultRequire": 1
