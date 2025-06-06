@@ -43,12 +43,13 @@
     "day30.explosive_shulker.ShulkerDeathMixin",
     "day30.explosive_shulker.ShulkerDropModifier",
     "day30.explosive_shulker.ShulkerProjectileMixin",
-    "day40.DisableHotbarSlotMixin",
-    "day40.MapTradeDisablerMixin",
-    "day40.PlayerInventoryMixin",
-    "day40.SlotRemoverMixin",
-    "day40.StructureDisablerMixin",
-    "day40.StructureLocateOverwriteMixin"
+    "day40.onTotemActivation",
+    "day40.playerinventory.DisableHotbarSlotMixin",
+    "day40.playerinventory.PlayerInventoryMixin",
+    "day40.playerinventory.SlotRemoverMixin",
+    "day40.worldgen.MapTradeDisablerMixin",
+    "day40.worldgen.StructureDisablerMixin",
+    "day40.worldgen.StructureLocateOverwriteMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod.mixin.common;
 
+import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -21,6 +22,7 @@ public abstract class PlayerNetheriteArmorMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
+        int day = ConfigFileManager.readConfig().getDay();
         PlayerEntity player = (PlayerEntity) (Object) this;
 
         boolean wearingFullNetherite = checkFullNetheriteArmor(player);
@@ -28,14 +30,19 @@ public abstract class PlayerNetheriteArmorMixin {
 
         if (wearingFullNetherite && !wasWearingFullNetherite) {
             // Apply health modifier
-            player.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(28);
+            if (day < 40) {
+                player.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(maxHealthAttr.getBaseValue() + 8);
+            } else {
+                player.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(20);
+            }
+
             wasWearingFullNetherite = true;
 
         } else if (!wearingFullNetherite && wasWearingFullNetherite) {
             // Remove health modifier
             wasWearingFullNetherite = false;
 
-            player.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(20);
+            player.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(maxHealthAttr.getBaseValue() - 8);
 
             // Adjust current health if it exceeds the new maximum
             if (player.getHealth() > player.getMaxHealth()) {

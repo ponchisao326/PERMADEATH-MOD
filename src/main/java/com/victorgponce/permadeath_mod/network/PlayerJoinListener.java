@@ -6,14 +6,27 @@ import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.spongepowered.asm.mixin.Unique;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.victorgponce.permadeath_mod.Permadeath_mod.LOGGER;
+
 public class PlayerJoinListener implements ServerPlayConnectionEvents.Join {
+
+    private boolean wasWearingFullNetherite = false;
+
     @Override
     public void onPlayReady(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
         ServerPlayerEntity player = handler.getPlayer();
@@ -39,6 +52,7 @@ public class PlayerJoinListener implements ServerPlayConnectionEvents.Join {
                 "ON DUPLICATE KEY UPDATE LastConnection = CURRENT_TIMESTAMP";;
 
         DataBaseHandler.databaseConnector(url, user, password, sql);
+        LOGGER.info("Jugador insertado o actualizado: " + playerName);
 
         DayPacketPayloadHandler(player, server);
     }

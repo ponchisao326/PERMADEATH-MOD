@@ -16,6 +16,7 @@ public class onTotemActivation {
     public void onTotemActivationFunction(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         int day = ConfigFileManager.readConfig().getDay();
         if (day < 30) return;
+        if (day >= 40) return;
         // Grants the 1%
         if (Random.create().nextInt(100) >= 1) return;
 
