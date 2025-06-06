@@ -86,7 +86,6 @@ public class LootTableOverwriter {
             } else if (key.equals(LootTables.UNDERWATER_RUIN_SMALL_CHEST)) {
                 LootTable.Builder builder = LootTable.builder();
 
-                // Pool 1: Coal, Stone Axe, Rotten Flesh, Emerald, Wheat
                 builder.pool(LootPool.builder()
                         .rolls(UniformLootNumberProvider.create(2, 8))
                         .with(ItemEntry.builder(Items.COAL)
@@ -104,7 +103,6 @@ public class LootTableOverwriter {
                                         UniformLootNumberProvider.create(2, 3))))
                 );
 
-                // Pool 2: Leather Chestplate, Golden Helmet, Enchanted Fishing Rod, Treasure Map
                 builder.pool(LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1))
                         .with(ItemEntry.builder(Items.LEATHER_CHESTPLATE))
