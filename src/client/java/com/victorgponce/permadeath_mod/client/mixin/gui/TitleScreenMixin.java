@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.client.mixin;
+package com.victorgponce.permadeath_mod.client.mixin.gui;
 
 import com.victorgponce.permadeath_mod.client.data.BinaryDataHandler;
 import com.victorgponce.permadeath_mod.client.screens.CustomMainMenu;
@@ -9,8 +9,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import static com.victorgponce.permadeath_mod.client.Permadeath_modClient.LOGGER;
 
 @Mixin(TitleScreen.class)
 public class TitleScreenMixin {

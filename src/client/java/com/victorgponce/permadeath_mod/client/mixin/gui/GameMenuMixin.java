@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.client.mixin;
+package com.victorgponce.permadeath_mod.client.mixin.gui;
 
 import com.victorgponce.permadeath_mod.client.screens.CustomMainMenu;
 import net.minecraft.client.MinecraftClient;

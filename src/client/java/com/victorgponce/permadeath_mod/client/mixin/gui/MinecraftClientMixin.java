@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.client.mixin;
+package com.victorgponce.permadeath_mod.client.mixin.gui;
 
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;

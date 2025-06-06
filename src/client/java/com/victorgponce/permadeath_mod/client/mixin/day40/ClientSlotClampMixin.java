@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.client.mixin;
+package com.victorgponce.permadeath_mod.client.mixin.day40;
 
 import com.victorgponce.permadeath_mod.client.data.BinaryDataHandler;
 import org.spongepowered.asm.mixin.Mixin;
