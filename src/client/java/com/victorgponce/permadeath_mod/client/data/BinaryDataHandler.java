@@ -21,7 +21,7 @@ public class BinaryDataHandler {
     private final Path configPath;
 
     private BinaryDataHandler() {
-        // Crear directorio de configuración si no existe
+        // Create config directory if it does not exist
         configPath = FabricLoader.getInstance().getConfigDir()
                 .resolve(CONFIG_DIR)
                 .resolve(FILE_NAME);
@@ -41,15 +41,15 @@ public class BinaryDataHandler {
         try {
             Files.createDirectories(configPath.getParent());
         } catch (IOException e) {
-            LOGGER.error("Error creando directorio de configuración: " + e.getMessage());
+            LOGGER.error("Error creating config directory: " + e.getMessage());
         }
     }
 
     public void load() {
         if (!Files.exists(configPath)) {
-            // Archivo no existe, usar valor por defecto
+            // File does not exist, use default value
             firstExecution = true;
-            day = 0; // Valor por defecto para el día
+            day = 0; // Default value for day
             save();
             return;
         }
@@ -58,7 +58,7 @@ public class BinaryDataHandler {
             firstExecution = dis.readBoolean();
             day = dis.readInt();
         } catch (IOException e) {
-            LOGGER.error("Error cargando configuración: " + e.getMessage());
+            LOGGER.error("Error loading config: " + e.getMessage());
         }
     }
 
@@ -67,24 +67,24 @@ public class BinaryDataHandler {
             dos.writeBoolean(firstExecution);
             dos.writeInt(day);
         } catch (IOException e) {
-            LOGGER.error("Error guardando configuración: " + e.getMessage());
+            LOGGER.error("Error saving config: " + e.getMessage());
         }
     }
 
-    // Getter y Setter
+    // Getter and Setter
     public boolean getFirstExecution() {
         return firstExecution;
     }
 
     public void setFirstExecution(boolean value) {
         this.firstExecution = value;
-        save(); // Auto-guardado al modificar el valor
+        save(); // Auto-save when modifying the value
     }
 
     public int getDay() {return day;}
 
     public void setDay(int day) {
         this.day = day;
-        save(); // Auto-guardado al modificar el día
+        save(); // Auto-save when modifying the day
     }
 }

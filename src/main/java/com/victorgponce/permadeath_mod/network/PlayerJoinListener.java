@@ -25,8 +25,6 @@ import static com.victorgponce.permadeath_mod.Permadeath_mod.LOGGER;
 
 public class PlayerJoinListener implements ServerPlayConnectionEvents.Join {
 
-    private boolean wasWearingFullNetherite = false;
-
     @Override
     public void onPlayReady(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
         ServerPlayerEntity player = handler.getPlayer();
@@ -52,12 +50,12 @@ public class PlayerJoinListener implements ServerPlayConnectionEvents.Join {
                 "ON DUPLICATE KEY UPDATE LastConnection = CURRENT_TIMESTAMP";
 
         DataBaseHandler.databaseConnectorStatement(url, user, password, sql, playerName);
-        LOGGER.info("Jugador insertado o actualizado: " + playerName);
+        LOGGER.info("Player inserted or updated: " + playerName);
 
-        DayPacketPayloadHandler(player, server);
+        DayPacketPayloadHandler(player);
     }
 
-    private void DayPacketPayloadHandler(ServerPlayerEntity player, MinecraftServer server) {
+    private void DayPacketPayloadHandler(ServerPlayerEntity player) {
         int day = ConfigFileManager.readConfig().getDay();
 
         DayPacketS2CPayload payload = new DayPacketS2CPayload(day);

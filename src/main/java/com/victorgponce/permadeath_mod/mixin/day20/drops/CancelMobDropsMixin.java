@@ -20,13 +20,13 @@ public class CancelMobDropsMixin {
     private void onDropLoot(ServerWorld world, DamageSource damageSource, boolean causedByPlayer, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
 
+        // If the day is less than 20, we don't cancel the drop
         int day = ConfigFileManager.readConfig().getDay();
+        if (day < 20) return;
 
-        if (day >= 20) {
-            if (DropHelper.shouldCancelDrop(entity)) {
-                // We cancel the drop for this entites
-                ci.cancel();
-            }
+        if (DropHelper.shouldCancelDrop(entity)) {
+            // We cancel the drop for this entites
+            ci.cancel();
         }
     }
 }

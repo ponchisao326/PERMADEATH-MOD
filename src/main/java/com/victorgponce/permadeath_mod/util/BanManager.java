@@ -29,7 +29,7 @@ public class BanManager {
         Pattern pattern = Pattern.compile("^jdbc:mysql://([\\w.-]+)(?::(\\d+))?/([\\w]+)$");
         Matcher matcher = pattern.matcher(url);
         if (!matcher.matches()) {
-            throw new RuntimeException("Formato de URL inválido en el archivo de configuración");
+            throw new RuntimeException("URL format is invalid in the config file, must be in this format: jdbc:mysql://BDIP:3306/your_database");
         }
 
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
@@ -53,17 +53,17 @@ public class BanManager {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error en la base de datos: " + e.getMessage());
+            throw new RuntimeException("Error on the database: " + e.getMessage());
         }
     }
 
     private static void banPlayer(MinecraftServer server, ServerPlayerEntity player) {
         // Broadcast message to all the players
-        Text broadcastMsg = Text.literal("Este es el comienzo del sufrimiento eterno de ")
+        Text broadcastMsg = Text.literal("This is the beginning of the eternal suffering of ")
                 .formatted(Formatting.BOLD)
                 .append(Text.literal(player.getName().getString())
                         .formatted(Formatting.GOLD, Formatting.BOLD))
-                .append(Text.literal(". ¡HA SIDO PERMABANEADO!")
+                .append(Text.literal(". ¡HAS BEING PERMABANNED!")
                         .formatted(Formatting.DARK_RED, Formatting.BOLD));
 
         server.getPlayerManager().broadcast(broadcastMsg, false);
@@ -77,22 +77,22 @@ public class BanManager {
                         null,
                         "☠ Permadeath System ☠",
                         null,
-                        "¡Has sido Permabaneado!"
+                        "¡You have been PERMABANNED!"
                 )
         );
 
         // Disconnect player with a message
         player.networkHandler.disconnect(
-                Text.literal("¡HAS SIDO PERMABANEADO!")
+                Text.literal("¡You have been PERMABANNED!")
                         .formatted(Formatting.RED, Formatting.BOLD)
         );
     }
 
     private static void sendPermadeathTitle(MinecraftServer server, ServerPlayerEntity bannedPlayer) {
         // Configure Times (in ticks)
-        int fadeIn = 10;   // 0.5 segundos
-        int stay = 80;     // 4 segundos
-        int fadeOut = 20;  // 1 segundo
+        int fadeIn = 10;   // 0.5 seconds
+        int stay = 80;     // 4 seconds
+        int fadeOut = 20;  // 1 second
 
         // Create packets such as the official command does it
         TitleFadeS2CPacket timesPacket = new TitleFadeS2CPacket(fadeIn, stay, fadeOut);
@@ -101,7 +101,7 @@ public class BanManager {
                         .formatted(Formatting.RED, Formatting.BOLD)
         );
         SubtitleS2CPacket subtitlePacket = new SubtitleS2CPacket(
-                Text.literal(bannedPlayer.getName().getString() + " ha muerto")
+                Text.literal(bannedPlayer.getName().getString() + " has died!")
                         .formatted(Formatting.WHITE)
         );
 

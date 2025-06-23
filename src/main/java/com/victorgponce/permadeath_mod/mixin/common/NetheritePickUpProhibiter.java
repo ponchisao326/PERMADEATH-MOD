@@ -24,7 +24,7 @@ public abstract class NetheritePickUpProhibiter {
         if (player.isInCreativeMode()) return;
 
         if (prohibitedItems(stack.getItem())) {
-            this.player.sendMessage(Text.literal("No puedes coger este item, la netherite está prohibida")
+            this.player.sendMessage(Text.literal("You cannot grab this item, the netherite is prohibited!")
                             .formatted(Formatting.BOLD)
                             .formatted(Formatting.RED),
                     false);

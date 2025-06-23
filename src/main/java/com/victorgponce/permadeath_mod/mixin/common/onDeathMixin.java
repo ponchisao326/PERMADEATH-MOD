@@ -39,7 +39,7 @@ public abstract class onDeathMixin {
         Pattern pattern = Pattern.compile("^jdbc:mysql://([\\w.-]+)(?::(\\d+))?/([\\w]+)$");
         Matcher matcher = pattern.matcher(url);
         if (!matcher.matches()) {
-            throw new RuntimeException("URL inválida en el archivo de configuración.");
+            throw new RuntimeException("Invalid URL in the configuration file.");
         }
 
         // Escape single quotes for SQL
@@ -64,87 +64,87 @@ public abstract class onDeathMixin {
     @Unique
     private String getSimpleDeathCause(DamageSource damageSource) {
         if (damageSource.isOf(DamageTypes.IN_FIRE)) {
-            return "fuego";
+            return "fire";
         } else if (damageSource.isOf(DamageTypes.CAMPFIRE)) {
-            return "hoguera";
+            return "campfire";
         } else if (damageSource.isOf(DamageTypes.LIGHTNING_BOLT)) {
-            return "rayo";
+            return "lightning";
         } else if (damageSource.isOf(DamageTypes.ON_FIRE)) {
-            return "quemaduras";
+            return "burns";
         } else if (damageSource.isOf(DamageTypes.LAVA)) {
             return "lava";
         } else if (damageSource.isOf(DamageTypes.HOT_FLOOR)) {
-            return "suelo caliente";
+            return "hot floor";
         } else if (damageSource.isOf(DamageTypes.IN_WALL)) {
-            return "asfixia";
+            return "suffocation";
         } else if (damageSource.isOf(DamageTypes.CRAMMING)) {
-            return "aplastamiento";
+            return "cramming";
         } else if (damageSource.isOf(DamageTypes.DROWN)) {
-            return "ahogamiento";
+            return "drowning";
         } else if (damageSource.isOf(DamageTypes.STARVE)) {
-            return "hambre";
+            return "starvation";
         } else if (damageSource.isOf(DamageTypes.CACTUS)) {
             return "cactus";
         } else if (damageSource.isOf(DamageTypes.FALL)) {
-            return "caída";
+            return "fall";
         } else if (damageSource.isOf(DamageTypes.ENDER_PEARL)) {
-            return "perla ender";
+            return "ender pearl";
         } else if (damageSource.isOf(DamageTypes.FLY_INTO_WALL)) {
-            return "vuelo";
+            return "flying";
         } else if (damageSource.isOf(DamageTypes.OUT_OF_WORLD)) {
-            return "vacío";
+            return "void";
         } else if (damageSource.isOf(DamageTypes.MAGIC)) {
-            return "magia";
+            return "magic";
         } else if (damageSource.isOf(DamageTypes.WITHER)) {
             return "wither";
         } else if (damageSource.isOf(DamageTypes.DRAGON_BREATH)) {
-            return "aliento de dragón";
+            return "dragon breath";
         } else if (damageSource.isOf(DamageTypes.DRY_OUT)) {
-            return "deshidratación";
+            return "dehydration";
         } else if (damageSource.isOf(DamageTypes.SWEET_BERRY_BUSH)) {
-            return "arbusto de bayas";
+            return "berry bush";
         } else if (damageSource.isOf(DamageTypes.FREEZE)) {
-            return "congelación";
+            return "freezing";
         } else if (damageSource.isOf(DamageTypes.STALAGMITE)) {
-            return "estalagmita";
+            return "stalagmite";
         } else if (damageSource.isOf(DamageTypes.FALLING_BLOCK)) {
-            return "bloque caído";
+            return "falling block";
         } else if (damageSource.isOf(DamageTypes.FALLING_ANVIL)) {
-            return "yunque";
+            return "anvil";
         } else if (damageSource.isOf(DamageTypes.FALLING_STALACTITE)) {
-            return "estalactita";
+            return "stalactite";
         } else if (damageSource.isOf(DamageTypes.STING)) {
-            return "picadura";
+            return "sting";
         } else if (damageSource.isOf(DamageTypes.MOB_ATTACK) || damageSource.isOf(DamageTypes.MOB_ATTACK_NO_AGGRO)) {
-            return "ataque de mob";
+            return "mob attack";
         } else if (damageSource.isOf(DamageTypes.PLAYER_ATTACK)) {
             return "PvP";
         } else if (damageSource.isOf(DamageTypes.ARROW)) {
-            return "flecha";
+            return "arrow";
         } else if (damageSource.isOf(DamageTypes.TRIDENT)) {
-            return "tridente";
+            return "trident";
         } else if (damageSource.isOf(DamageTypes.MOB_PROJECTILE) || damageSource.isOf(DamageTypes.SPIT)) {
-            return "proyectil";
+            return "projectile";
         } else if (damageSource.isOf(DamageTypes.FIREWORKS)) {
-            return "fuegos artificiales";
+            return "fireworks";
         } else if (damageSource.isOf(DamageTypes.FIREBALL)) {
-            return "bola de fuego";
+            return "fireball";
         } else if (damageSource.isOf(DamageTypes.WITHER_SKULL)) {
-            return "cráneo de wither";
+            return "wither skull";
         } else if (damageSource.isOf(DamageTypes.THORNS)) {
-            return "espinas";
+            return "thorns";
         } else if (damageSource.isOf(DamageTypes.EXPLOSION) || damageSource.isOf(DamageTypes.PLAYER_EXPLOSION)) {
-            return "explosión";
+            return "explosion";
         } else if (damageSource.isOf(DamageTypes.SONIC_BOOM)) {
-            return "onda sónica";
+            return "sonic boom";
         } else if (damageSource.isOf(DamageTypes.BAD_RESPAWN_POINT)) {
-            return "punto de respawn";
+            return "respawn point";
         } else if (damageSource.isOf(DamageTypes.OUTSIDE_BORDER)) {
-            return "borde del mundo";
+            return "world border";
         } else if (damageSource.isOf(DamageTypes.MACE_SMASH)) {
-            return "golpe de maza";
+            return "mace smash";
         } else {
-            return "otros";
+            return "other";
         }
     }
 

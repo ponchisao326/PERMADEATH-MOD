@@ -8,7 +8,6 @@ import net.minecraft.util.math.random.Random;
 public class RavagerDropDay25 extends RavagerDropBase {
     @Override
     public void applyDrops(LivingEntity entity, Item item, ServerWorld world) {
-        // Lógica específica para el día 25
         if (Random.create().nextInt(100) <= 20) {
             super.applyDrops(entity, item, world);
         }

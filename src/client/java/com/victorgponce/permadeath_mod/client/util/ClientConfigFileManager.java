@@ -40,11 +40,11 @@ public class ClientConfigFileManager {
         try {
             List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
 
-            // Mapeo de claves con sus valores formateados correctamente
+            // Mapping of keys with their correctly formatted values
             Map<String, String> updates = new HashMap<>();
-            updates.put("serverAddress", "\"" + cfg.getServerAddress() + "\""); // Comillas para strings
-            updates.put("serverPort", String.valueOf(cfg.getServerPort()));      // Números sin comillas
-            updates.put("enabledServerCheck", String.valueOf(cfg.isEnabledServerCheck())); // Booleanos
+            updates.put("serverAddress", "\"" + cfg.getServerAddress() + "\""); // Quotes for strings
+            updates.put("serverPort", String.valueOf(cfg.getServerPort()));      // Numbers without quotes
+            updates.put("enabledServerCheck", String.valueOf(cfg.isEnabledServerCheck())); // Booleans
 
             for (int i = 0; i < lines.size(); i++) {
                 String line = lines.get(i).trim();
@@ -90,7 +90,7 @@ public class ClientConfigFileManager {
                     .getClassLoader()
                     .getResourceAsStream("config/PERMADEATH/client_config.toml")) {
                 if (in == null) {
-                    throw new RuntimeException("Template client_config.toml not found in resources (Contact with the creator and make a new issue: https://github.com/ponchisao326/PERMADEATH-MOD)");
+                    throw new RuntimeException("Template client_config.toml not found in resources (Contact the creator and open a new issue: https://github.com/ponchisao326/PERMADEATH-MOD)");
                 }
                 // Ensures the destination folder
                 createConfigFolder();

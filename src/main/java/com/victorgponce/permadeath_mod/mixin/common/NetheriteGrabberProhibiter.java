@@ -34,7 +34,7 @@ public class NetheriteGrabberProhibiter {
 
         var slot = handler.getSlot(slotIndex);
         if (prohibitedItems(slot.getStack().getItem())) {
-            player.sendMessage(Text.of("¡No puedes coger esto!"), false);
+            player.sendMessage(Text.of("¡You cannot grab this!"), false);
             ci.cancel();
         }
     }

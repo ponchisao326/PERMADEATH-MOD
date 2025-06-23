@@ -18,9 +18,9 @@ public class EndSpawnConfig {
                 BiomeSelectors.foundInTheEnd(),
                 SpawnGroup.MONSTER,
                 EntityType.GHAST,
-                65,  // peso de spawn mayor
-                1,   // mínimo 1
-                3    // máximo 3
+                65,  // spawn weigh
+                1,   // minimum 1
+                3    // maximum 3
         );
 
         BiomeModifications.addSpawn(

@@ -8,16 +8,16 @@ public class CustomOptionsScreen extends OptionsScreen {
     private final Screen parent;
 
     public CustomOptionsScreen(Screen parent, GameOptions gameOptions) {
-        // Llamamos al constructor de la clase base (OptionsScreen)
+        // We call the base class constructor (OptionsScreen)
         super(parent, gameOptions);
-        this.parent = parent; // Almacenamos la pantalla padre
+        this.parent = parent; // We store the parent screen
     }
 
-    // Sobrescribir el método close para que regrese a CustomMainMenu
+    // Override the close method to return to CustomMainMenu
     @Override
     public void close() {
         if (this.client != null) {
-            // Asegurarnos de que se regrese a tu CustomMainMenu
+            // We ensure that we return to your CustomMainMenu
             this.client.setScreen(this.parent);
         }
     }

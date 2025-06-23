@@ -23,19 +23,19 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class PermadeathCommand implements CommandRegistrationCallback {
 
-    private final Text info = Text.literal("Este mod es una creación inspirada en la original obra de ")
+    private final Text info = Text.literal("This mod is a creation inspired by the original work of ")
             .styled(style -> style.withColor(TextColor.fromFormatting(Formatting.GOLD)))
-            .append(Text.literal("KernelFreeze para ElRichMC.")
+            .append(Text.literal("KernelFreeze for ElRichMC.")
                     .styled(style -> style.withColor(TextColor.fromFormatting(Formatting.GRAY))))
-            .append(Text.literal(" El mod fue adaptado por ")
+            .append(Text.literal(" The mod was adapted by ")
                     .styled(style -> style.withColor(TextColor.fromFormatting(Formatting.GOLD))))
             .append(Text.literal("ponchisao326.")
                     .styled(style -> style.withColor(TextColor.fromFormatting(Formatting.GREEN))))
-            .append(Text.literal(" Si deseas obtener más información o necesitas asistencia, puedes utilizar el comando ")
+            .append(Text.literal(" If you want more information or need assistance, you can use the command ")
                     .styled(style -> style.withColor(TextColor.fromFormatting(Formatting.GOLD))))
             .append(Text.literal("/permadeath help")
                     .styled(style -> style.withColor(TextColor.fromFormatting(Formatting.BLUE))))
-            .append(Text.literal(" en el juego. Además, puedes visitar mi sitio web oficial en ")
+            .append(Text.literal(" in the game. You can also visit my official website at ")
                     .styled(style -> style.withColor(TextColor.fromFormatting(Formatting.GOLD))))
             .append(Text.literal("https://victorgponce.com")
                     .styled(style -> style.withColor(TextColor.fromFormatting(Formatting.AQUA))));
@@ -58,35 +58,34 @@ public class PermadeathCommand implements CommandRegistrationCallback {
                                             MinecraftServer server = ctx.getSource().getServer();
 
                                             if (value % 5 != 0) {
-                                                ctx.getSource().sendFeedback(() -> Text.literal("Por favor, el numero ha de ser uno de los válidos!"), false);
+                                                ctx.getSource().sendFeedback(() -> Text.literal("Please, the number must be one of the valid ones!"), false);
                                                 return value;
                                             }
 
                                             int day = ConfigFileManager.readConfig().getDay();
 
                                             if (value == day) {
-                                                ctx.getSource().sendFeedback(() -> Text.literal("Ya estamos en ese dia!"), false);
+                                                ctx.getSource().sendFeedback(() -> Text.literal("We are already on that day!"), false);
                                                 return value;
                                             }
 
                                             Config cfg = ConfigFileManager.readConfig();
                                             cfg.setDay(value);
-                                            // Guarda inmediatamente en el TOML:
+                                            // Save immediately to TOML:
                                             ConfigFileManager.saveConfig(cfg);
 
                                             server.getPlayerManager()
                                                     .broadcast(Text.literal(
                                                             String.format(
-                                                                    "El día ha sido cambiado, a partir de ahora es dia %d. Para aplicar los cambios correctamente el servidor se reiniciará en 5 segundos", value)
+                                                                    "The day has been changed, from now on it is day %d. To apply the changes correctly, the server will restart in 5 seconds", value)
                                                     ), false);
-                                            ctx.getSource().sendFeedback(() -> Text.literal("El servidor se va a stopear, por favor inicielo de nuevo manualmente!"), false);
+                                            ctx.getSource().sendFeedback(() -> Text.literal("The server will stop, please start it again manually!"), false);
 
                                             ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
                                             scheduler.schedule(() -> {
                                                 server.execute(() -> server.stop(false));
                                                 scheduler.shutdown();
                                             }, 5, TimeUnit.SECONDS);
-
 
                                             return value;
                                         })
@@ -96,25 +95,25 @@ public class PermadeathCommand implements CommandRegistrationCallback {
                                 .executes(ctx -> {
                                     int day = ConfigFileManager.readConfig().getDay();
                                     ctx.getSource().sendFeedback(
-                                            () -> Text.literal("Actualmente estamos en el día " + day), false
+                                            () -> Text.literal("We are currently on day " + day), false
                                     );
                                     return 1;
                                 })
                         )
                         .then(literal("enableDoubleShulkerShells")
-                        .requires(src -> src.hasPermissionLevel(4))
+                                .requires(src -> src.hasPermissionLevel(4))
                                 .executes(ctx -> {
                                     // Obtain instance
                                     BinaryServerDataHandler config = BinaryServerDataHandler.getInstance();
                                     if (config.getDoubleShulkerShell()) {
                                         ctx.getSource().sendFeedback(
-                                                () -> Text.literal("Double Shulker Shells ya está habilitado!"), false
+                                                () -> Text.literal("Double Shulker Shells is already enabled!"), false
                                         );
                                         return 1;
                                     }
                                     config.setDoubleShulkerShell();
                                     ctx.getSource().sendFeedback(
-                                            () -> Text.literal("El valor de Double Shulker Shells ha sido cambiado a " + config.getDoubleShulkerShell()), false
+                                            () -> Text.literal("The value of Double Shulker Shells has been changed to " + config.getDoubleShulkerShell()), false
                                     );
                                     return 1;
                                 })
@@ -126,13 +125,13 @@ public class PermadeathCommand implements CommandRegistrationCallback {
                                     BinaryServerDataHandler config = BinaryServerDataHandler.getInstance();
                                     if (!config.getDoubleShulkerShell()) {
                                         ctx.getSource().sendFeedback(
-                                                () -> Text.literal("Double Shulker Shells ya está deshabilitado!"), false
+                                                () -> Text.literal("Double Shulker Shells is already disabled!"), false
                                         );
                                         return 1;
                                     }
                                     config.setDoubleShulkerShell();
                                     ctx.getSource().sendFeedback(
-                                            () -> Text.literal("El valor de Double Shulker Shells ha sido cambiado a " + config.getDoubleShulkerShell()), false
+                                            () -> Text.literal("The value of Double Shulker Shells has been changed to " + config.getDoubleShulkerShell()), false
                                     );
                                     return 1;
                                 })

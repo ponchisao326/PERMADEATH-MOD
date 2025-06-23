@@ -21,7 +21,7 @@ public class BinaryServerDataHandler {
     private final Path configPath;
 
     private BinaryServerDataHandler() {
-        // Crear directorio de configuración si no existe
+        // Create config directory if it does not exist
         configPath = FabricLoader.getInstance().getConfigDir()
                 .resolve(CONFIG_DIR)
                 .resolve(FILE_NAME);
@@ -41,13 +41,13 @@ public class BinaryServerDataHandler {
         try {
             Files.createDirectories(configPath.getParent());
         } catch (IOException e) {
-            LOGGER.error("Error creando directorio de configuración: " + e.getMessage());
+            LOGGER.error("Error creating config directory: " + e.getMessage());
         }
     }
 
     public void load() {
         if (!Files.exists(configPath)) {
-            // Archivo no existe, usar valor por defecto
+            // File does not exist, use default value
             doubleShulkerShell = false;
             save();
             return;
@@ -56,7 +56,7 @@ public class BinaryServerDataHandler {
         try (DataInputStream dis = new DataInputStream(Files.newInputStream(configPath))) {
             doubleShulkerShell = dis.readBoolean();
         } catch (IOException e) {
-            LOGGER.error("Error cargando configuración: " + e.getMessage());
+            LOGGER.error("Error loading config: " + e.getMessage());
         }
     }
 
@@ -64,14 +64,16 @@ public class BinaryServerDataHandler {
         try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(configPath))) {
             dos.writeBoolean(doubleShulkerShell);
         } catch (IOException e) {
-            LOGGER.error("Error guardando configuración: " + e.getMessage());
+            LOGGER.error("Error saving config: " + e.getMessage());
         }
     }
 
-    public boolean getDoubleShulkerShell() {return doubleShulkerShell;}
+    public boolean getDoubleShulkerShell() {
+        return doubleShulkerShell;
+    }
 
     public void setDoubleShulkerShell() {
         this.doubleShulkerShell = !this.doubleShulkerShell;
-        save(); // Auto-guardado al modificar el valor
+        save(); // Auto-save when modifying the value
     }
 }

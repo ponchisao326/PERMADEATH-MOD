@@ -38,7 +38,7 @@ public class CustomTextCreditsScreen extends Screen {
     };
 
     private float scrollTime = 0f;
-    private final float baseSpeed = 0.5f; // velocidad normal
+    private final float baseSpeed = 0.5f; // normal speed
     private boolean spaceKeyPressed = false;
     private float speed = baseSpeed;
 
@@ -51,7 +51,7 @@ public class CustomTextCreditsScreen extends Screen {
 
     @Override
     protected void init() {
-        // Cargar sólo una vez
+        // Load only once
         if (lines.isEmpty()) {
             int index = 0;
             for (Identifier src : TEXT_SOURCES) {
@@ -65,23 +65,23 @@ public class CustomTextCreditsScreen extends Screen {
         try (Reader r = client.getResourceManager().openAsReader(id)) {
             BufferedReader br = new BufferedReader(r);
             String line;
-            boolean center = (section % 2 == 1);  // por ejemplo, centrar la sección de credits
+            boolean center = (section % 2 == 1);  // for example, center the credits section
             while ((line = br.readLine()) != null) {
                 OrderedText text = Text.literal(line).asOrderedText();
                 if (center) centeredLines.add(lines.size());
                 lines.add(text);
             }
-            // añadir espacio tras cada sección
+            // add space after each section
             lines.add(OrderedText.EMPTY);
             lines.add(OrderedText.EMPTY);
         } catch (IOException e) {
-            LOGGER.error("No se pudo cargar créditos: " + id, e);
+            LOGGER.error("Could not load credits: " + id, e);
         }
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        // Si pulsamos SPACE, activamos multiplicador
+        // If SPACE is pressed, activate multiplier
         if (keyCode == GLFW.GLFW_KEY_SPACE) {
             spaceKeyPressed = true;
             updateSpeed();
@@ -92,7 +92,7 @@ public class CustomTextCreditsScreen extends Screen {
 
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        // Al soltar SPACE, volvemos a velocidad normal
+        // When SPACE is released, return to normal speed
         if (keyCode == GLFW.GLFW_KEY_SPACE) {
             spaceKeyPressed = false;
             updateSpeed();
@@ -107,11 +107,11 @@ public class CustomTextCreditsScreen extends Screen {
 
     @Override
     public void render(DrawContext ctx, int mx, int my, float delta) {
-        // Fondo de viñeta
+        // Vignette background
         super.render(ctx, mx, my, delta);
         ctx.drawTexture(RenderLayer::getVignette, VIGNETTE, 0, 0, 0, 0, width, height, width, height);
 
-        // Avanzar scroll
+        // Advance scroll
         scrollTime += delta * speed;
         float offset = -scrollTime;
 
@@ -135,7 +135,7 @@ public class CustomTextCreditsScreen extends Screen {
 
         ctx.getMatrices().pop();
 
-        // Cerrar al terminar
+        // Close when finished
         if (scrollTime > totalHeight + height + 50) {
             this.onClose.run();
         }

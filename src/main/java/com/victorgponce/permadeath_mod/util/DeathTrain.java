@@ -16,12 +16,12 @@ public class DeathTrain {
             int currentTime = ((ServerWorldAccessor) serverWorld).worldProperties().getThunderTime();
             int newDuration = currentTime + 72000;
             serverWorld.setWeather(0, newDuration, true, true);
-            serverWorld.getServer().getPlayerManager().broadcast(Text.literal("El deathTrain Se ha seteado a " +
-                            (((ServerWorldAccessor) serverWorld).worldProperties().getThunderTime() / 20) + "segundos")
+            serverWorld.getServer().getPlayerManager().broadcast(Text.literal("The DeathTrain have been set to " +
+                            (((ServerWorldAccessor) serverWorld).worldProperties().getThunderTime() / 20) + "seconds")
                     .formatted(Formatting.RED, Formatting.BOLD), false);
         } else {
             serverWorld.setWeather(0, 72000, true, true);
-            serverWorld.getServer().getPlayerManager().broadcast(Text.literal("El deathTrain Se ha seteado a 1 hora")
+            serverWorld.getServer().getPlayerManager().broadcast(Text.literal("The DeathTrain have been set to 1 hour")
                     .formatted(Formatting.RED, Formatting.BOLD), false);
         }
         Config cfg = ConfigFileManager.readConfig();

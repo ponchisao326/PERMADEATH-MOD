@@ -36,7 +36,7 @@ public class OnThunderFinish {
 
     @Unique
     private static void onThunderEnd(ServerWorld serverWorld) {
-        serverWorld.getServer().getPlayerManager().broadcast(Text.literal("¡El Death Train ha llegado a su fin!")
+        serverWorld.getServer().getPlayerManager().broadcast(Text.literal("The Death Train has ended!")
                 .formatted(Formatting.RED, Formatting.BOLD), false);
         Config cfg = ConfigFileManager.readConfig();
         cfg.setDeathTrain(false);

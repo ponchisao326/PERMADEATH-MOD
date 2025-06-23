@@ -49,7 +49,7 @@ public class EndIslandModifier {
      */
     @Unique
     private BlockState getRandomVariantAtPos(int x, int y, int z) {
-        // Semilla basada en posición para consistencia
+        // Seed based on position for consistency
         long seed = new BlockPos(x, y, z).asLong();
         Random rnd = new Random(seed);
         return END_STONE_VARIANTS.get(rnd.nextInt(END_STONE_VARIANTS.size()))

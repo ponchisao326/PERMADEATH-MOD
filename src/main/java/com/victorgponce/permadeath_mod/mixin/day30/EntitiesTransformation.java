@@ -34,9 +34,11 @@ import static com.victorgponce.permadeath_mod.util.EntitiesCounter.guardianCount
 @Mixin(ServerWorld.class)
 public class EntitiesTransformation {
 
+    // ThreadLocal flag to prevent recursive custom spawns
     @Unique
     private static final ThreadLocal<Boolean> inCustomSpawn = ThreadLocal.withInitial(() -> false);
 
+    // List of available status effects to apply to certain entities
     @Unique
     public final List<StatusEffectInstance> efectosDisponibles = Arrays.asList(
             new StatusEffectInstance(StatusEffects.SPEED, 999999, 2),
@@ -49,17 +51,22 @@ public class EntitiesTransformation {
             new StatusEffectInstance(StatusEffects.RESISTANCE, 999999)
     );
 
+    // Injects at the start of addEntity to customize entity spawning
     @Inject(method = "addEntity", at = @At("HEAD"), cancellable = true)
     private void onEntitySpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
+        // Prevents recursion if already in a custom spawn
         if (inCustomSpawn.get()) return;
         int day = ConfigFileManager.readConfig().getDay();
+        // Only apply changes after day 30
         if (day < 30) return;
 
         try {
             inCustomSpawn.set(true);
             World world = entity.getWorld();
+            // Only proceed if in a ServerWorld
             if (!(world instanceof ServerWorld serverWorld)) return;
 
+            // Transform Squids into Guardians if under the limit
             if (entity instanceof SquidEntity && guardianCount < 20) {
                 cir.setReturnValue(false);
 
@@ -67,7 +74,6 @@ public class EntitiesTransformation {
                 guardian.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), entity.getYaw(), entity.getPitch());
 
                 guardian.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 999999, 2));
-
                 guardian.setCustomName(Text.literal("Speed Guardian"));
 
                 serverWorld.spawnEntity(guardian);
@@ -75,8 +81,10 @@ public class EntitiesTransformation {
                 guardianCount++;
             }
 
+            // Prevent spawning more Squids or Blazes if limits are reached
             if ((entity instanceof SquidEntity && guardianCount >= 20) || (entity instanceof BlazeEntity && blazeCount >= 15)) cir.setReturnValue(false);
 
+            // Transform Bats into Blazes if under the limit
             if (entity instanceof BatEntity && blazeCount < 15) {
                 cir.setReturnValue(false);
 
@@ -84,7 +92,6 @@ public class EntitiesTransformation {
                 blaze.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), entity.getYaw(), entity.getPitch());
 
                 blaze.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 999999, 2));
-
                 blaze.setCustomName(Text.literal("Resistance Blaze"));
 
                 serverWorld.spawnEntity(blaze);
@@ -92,11 +99,13 @@ public class EntitiesTransformation {
                 blazeCount++;
             }
 
+            // Make all Creepers charged
             if (entity instanceof CreeperEntity creeper) {
                 CreeperEntityAccessor accessor = (CreeperEntityAccessor) creeper;
                 creeper.getDataTracker().set(accessor.charged(), true);
             }
 
+            // Give Pillagers a super-enchanted crossbow and invisibility
             if (entity instanceof PillagerEntity pillager) {
                 ItemStack crossBow = new ItemStack(Items.CROSSBOW);
                 crossBow.addEnchantment(world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.QUICK_CHARGE), 10);
@@ -105,6 +114,7 @@ public class EntitiesTransformation {
                 pillager.equipStack(EquipmentSlot.MAINHAND, crossBow);
             }
 
+            // Give Skeletons a stack of strong harming tipped arrows in offhand
             if (entity instanceof SkeletonEntity skeleton) {
                 ItemStack tippedArrow = PotionContentsComponent.createStack(Items.TIPPED_ARROW, Potions.STRONG_HARMING);
                 tippedArrow.setCount(64);
@@ -112,6 +122,7 @@ public class EntitiesTransformation {
                 skeleton.setEquipmentDropChance(EquipmentSlot.OFFHAND, 0.0f);
             }
 
+            // Equip Zombified Piglins with full diamond armor
             if (entity instanceof ZombifiedPiglinEntity piglin) {
                 piglin.equipStack(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
                 piglin.equipStack(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
@@ -119,14 +130,17 @@ public class EntitiesTransformation {
                 piglin.equipStack(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
             }
 
+            // Make Iron Golems super fast
             if (entity instanceof IronGolemEntity ironGolem) {
                 ironGolem.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 999999, 4));
             }
 
+            // Make Endermen extra strong
             if (entity instanceof EndermanEntity enderman) {
                 enderman.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 999999, 2));
             }
 
+            // Give Silverfish several powerful effects
             if (entity instanceof SilverfishEntity silverfish) {
                 for (int i = 0; i < 5; i++) {
                     silverfish.addStatusEffect(efectosDisponibles.get(i));
@@ -134,6 +148,7 @@ public class EntitiesTransformation {
             }
 
         } finally {
+            // Always reset the custom spawn flag
             inCustomSpawn.set(false);
         }
     }
