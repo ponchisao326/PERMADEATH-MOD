@@ -49,13 +49,12 @@ public abstract class onDeathMixin {
         // Update lives and player status
         String updateSql = "UPDATE Players SET Lives = Lives - 1, DeathCount = DeathCount + 1, " +
                 "Status = CASE WHEN (Lives - 1) <= 0 THEN 'inactive' ELSE Status END " +
-                "WHERE Username = '" + escapedPlayerName + "'";
-        DataBaseHandler.databaseConnector(url, user, password, updateSql);
+                "WHERE Username = ?";
+        DataBaseHandler.databaseConnectorStatement(url, user, password, updateSql, escapedPlayerName);
 
-        // Insert death cause
         String insertDeathSql = "INSERT INTO Deaths (PlayerID, Cause) " +
-                "VALUES ((SELECT PlayerID FROM Players WHERE Username = '" + escapedPlayerName + "'), '" + escapedCause + "')";
-        DataBaseHandler.databaseConnector(url, user, password, insertDeathSql);
+                "VALUES ((SELECT PlayerID FROM Players WHERE Username = ?), ?)";
+        DataBaseHandler.databaseConnectorStatement(url, user, password, insertDeathSql, escapedPlayerName, escapedCause);
 
         DeathTrain.enableDeathTrain(damageSource);
         // Call the CheckAndBan function

@@ -48,10 +48,10 @@ public class PlayerJoinListener implements ServerPlayConnectionEvents.Join {
         }
 
         String sql = "INSERT INTO Players (Username, LastConnection) " +
-                "VALUES ('" + playerName + "', CURRENT_TIMESTAMP) " +
-                "ON DUPLICATE KEY UPDATE LastConnection = CURRENT_TIMESTAMP";;
+                "VALUES (?, CURRENT_TIMESTAMP) " +
+                "ON DUPLICATE KEY UPDATE LastConnection = CURRENT_TIMESTAMP";
 
-        DataBaseHandler.databaseConnector(url, user, password, sql);
+        DataBaseHandler.databaseConnectorStatement(url, user, password, sql, playerName);
         LOGGER.info("Jugador insertado o actualizado: " + playerName);
 
         DayPacketPayloadHandler(player, server);
