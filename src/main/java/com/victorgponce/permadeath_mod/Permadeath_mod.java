@@ -3,13 +3,10 @@ package com.victorgponce.permadeath_mod;
 import com.victorgponce.permadeath_mod.commands.PermadeathCommand;
 import com.victorgponce.permadeath_mod.config.Config;
 import com.victorgponce.permadeath_mod.data.DataBaseHandler;
-import com.victorgponce.permadeath_mod.data.WorldHolder;
 import com.victorgponce.permadeath_mod.listeners.*;
 import com.victorgponce.permadeath_mod.loot_tables.LootTableOverwriter;
 import com.victorgponce.permadeath_mod.mobs.EndSpawnConfig;
-import com.victorgponce.permadeath_mod.network.NetheriteProhibiter;
-import com.victorgponce.permadeath_mod.network.PlayerJoinListener;
-import com.victorgponce.permadeath_mod.network.DayPacketS2CPayload;
+import com.victorgponce.permadeath_mod.network.*;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -22,9 +19,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.GhastEntity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,15 +64,7 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
         ServerPlayConnectionEvents.JOIN.register(new PlayerJoinListener());
         PlayerBlockBreakEvents.BEFORE.register(new NetheriteProhibiter());
 
-        ServerLifecycleEvents.SERVER_STARTED.register((MinecraftServer server) -> {
-            ServerWorld overworld = server.getWorld(World.OVERWORLD);
-            WorldHolder.setOverworld(overworld);
-            LOGGER.info("The Overworld have been stored correctly on WorldHolder.");
-
-            ServerWorld end = server.getWorld(World.END);
-            WorldHolder.setEnd(end);
-            LOGGER.info("The End have been stored correctly on WorldHolder.");
-        });
+        ServerLifecycleEvents.SERVER_STARTED.register(new WorldHolderHandler());
 
         // These callbacks control if the time resets (night skip)
         EntitySleepEvents.START_SLEEPING.register(new OnSleepEvent());
@@ -102,6 +90,10 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
 
         // Register the LootTableOverwriter
         LootTableOverwriter.register();
+
+        // Check if the day is greater than or equal to 40 and disable torches and redstone torches
+        ServerLifecycleEvents.SERVER_STARTED.register(new RecipeDisabler());
+
     }
 
 }
