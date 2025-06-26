@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.mixin.day40.worldgen;
+package com.victorgponce.permadeath_mod.mixin.day40.worldgen.structure_disabler;
 
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.registry.DynamicRegistryManager;

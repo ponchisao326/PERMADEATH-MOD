@@ -85,7 +85,7 @@ public class PlayerJoinListener implements ServerPlayConnectionEvents.Join {
 
         if (day >= 40) {
             LOGGER.info("Setting player health to 12 (day > 40)");
-            maxHealthAttr.setBaseValue(maxHealthAttr.getBaseValue() - 8);
+            maxHealthAttr.setBaseValue(12);
         } else {
             // Honestly, this is practically useless, but I want to keep the health at 20 if the admin reverts the day ;)
             maxHealthAttr.setBaseValue(20);

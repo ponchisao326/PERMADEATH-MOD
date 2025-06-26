@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.mixin.day40.worldgen;
+package com.victorgponce.permadeath_mod.mixin.day40.worldgen.end;
 
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.ItemStack;

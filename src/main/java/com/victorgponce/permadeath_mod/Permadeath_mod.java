@@ -6,6 +6,7 @@ import com.victorgponce.permadeath_mod.data.DataBaseHandler;
 import com.victorgponce.permadeath_mod.listeners.*;
 import com.victorgponce.permadeath_mod.loot_tables.LootTableOverwriter;
 import com.victorgponce.permadeath_mod.mobs.EndSpawnConfig;
+import com.victorgponce.permadeath_mod.mobs.MushroomBiomeModifier;
 import com.victorgponce.permadeath_mod.network.*;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.fabricmc.api.DedicatedServerModInitializer;
@@ -14,7 +15,6 @@ import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -83,7 +83,9 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
                 GhastEntity.createMobAttributes()
         );
 
+        // Register and initialize the mob spawn modifiers
         EndSpawnConfig.init();
+        MushroomBiomeModifier.init();
 
         PayloadTypeRegistry.playS2C().register(DayPacketS2CPayload.ID, DayPacketS2CPayload.CODEC);
 
