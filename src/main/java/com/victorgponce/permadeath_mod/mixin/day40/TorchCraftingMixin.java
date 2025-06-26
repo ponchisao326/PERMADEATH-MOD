@@ -2,20 +2,17 @@ package com.victorgponce.permadeath_mod.mixin.day40;
 
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -71,7 +68,9 @@ public class TorchCraftingMixin {
                 // Debug message
                 if (player instanceof ServerPlayerEntity) {
                     (player).sendMessage(
-                            Text.literal("¡You cannot craft torches after day 40!"),
+                            Text.literal("¡You cannot craft torches after day 40!").styled(
+                                    style -> style.withColor(0xFF0000) // Red color
+                            ),
                             false
                     );
                 }
