@@ -14,13 +14,12 @@ import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.GhastEntity;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,10 +89,6 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
 
         // Register the LootTableOverwriter
         LootTableOverwriter.register();
-
-        // Check if the day is greater than or equal to 40 and disable torches and redstone torches
-        ServerLifecycleEvents.SERVER_STARTED.register(new RecipeDisabler());
-
     }
 
 }
