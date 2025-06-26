@@ -25,6 +25,10 @@ import static com.victorgponce.permadeath_mod.Permadeath_mod.LOGGER;
 
 public class PlayerJoinListener implements ServerPlayConnectionEvents.Join {
 
+    /**
+     * Registers the player join event listener.
+     * This method is called when the server initializes.
+     */
     @Override
     public void onPlayReady(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
         ServerPlayerEntity player = handler.getPlayer();
@@ -53,12 +57,38 @@ public class PlayerJoinListener implements ServerPlayConnectionEvents.Join {
         LOGGER.info("Player inserted or updated: " + playerName);
 
         DayPacketPayloadHandler(player);
+        setPlayerHealth(player);
     }
 
+    /**
+     * Sends the current day to the player when they join the server.
+     * This is used to inform the player about the current game state.
+     *
+     * @param player The player who just joined the server.
+     */
     private void DayPacketPayloadHandler(ServerPlayerEntity player) {
         int day = ConfigFileManager.readConfig().getDay();
 
         DayPacketS2CPayload payload = new DayPacketS2CPayload(day);
         ServerPlayNetworking.send(player, payload);
+    }
+
+    /**
+     * Sets the player's health based on the current day.
+     * If the day is greater than 40, the player's maximum health is reduced.
+     *
+     * @param player The player whose health is being set.
+     */
+    private void setPlayerHealth(ServerPlayerEntity player) {
+        int day = ConfigFileManager.readConfig().getDay();
+        EntityAttributeInstance maxHealthAttr = player.getAttributeInstance(EntityAttributes.MAX_HEALTH);
+
+        if (day >= 40) {
+            LOGGER.info("Setting player health to 12 (day > 40)");
+            maxHealthAttr.setBaseValue(maxHealthAttr.getBaseValue() - 8);
+        } else {
+            // Honestly, this is practically useless, but I want to keep the health at 20 if the admin reverts the day ;)
+            maxHealthAttr.setBaseValue(20);
+        }
     }
 }
