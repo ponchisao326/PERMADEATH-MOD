@@ -16,6 +16,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MobEntity.class)
 public abstract class MobSpawnMixin {
 
+    /**
+     * This mixin allows mobs to spawn on mycelium blocks by using the grass block spawning logic.
+     * It checks if the block below the spawn position is mycelium and allows spawning if it is.
+     */
     @Inject(
             method = "canMobSpawn(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/WorldAccess;Lnet/minecraft/entity/SpawnReason;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/random/Random;)Z",
             at = @At("HEAD"),
@@ -29,16 +33,16 @@ public abstract class MobSpawnMixin {
             Random random,
             CallbackInfoReturnable<Boolean> cir
     ) {
-        // Obtener el bloque debajo de la posición de spawn
+        // Obtain the block below the spawn position
         BlockPos downPos = pos.down();
         BlockState blockState = world.getBlockState(downPos);
 
-        // Verificar si es micelio
+        // Verify if the block is mycelium
         if (blockState.isOf(Blocks.MYCELIUM)) {
-            // Crear un estado de bloque de hierba para la verificación
+            // Create a grass block state for the check
             BlockState grassState = Blocks.GRASS_BLOCK.getDefaultState();
 
-            // Usar la lógica de spawn de hierba para micelio
+            // Use the grass spawn logic for mycelium
             boolean canSpawn = grassState.allowsSpawning(world, downPos, type);
             if (canSpawn) {
                 cir.setReturnValue(true);
