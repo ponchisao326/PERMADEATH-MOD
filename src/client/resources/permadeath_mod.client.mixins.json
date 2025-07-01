@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "day40.ClientSlotClampMixin",
+    "day40.HandledScreenMixin",
     "gui.GameMenuMixin",
     "gui.MinecraftClientMixin",
     "gui.TitleScreenMixin"
