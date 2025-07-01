@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod.client.mixin.day40;
 
+import com.victorgponce.permadeath_mod.client.data.BinaryDataHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -17,6 +18,10 @@ public abstract class HandledScreenMixin {
      */
     @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
     private void disableOffHandKey(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+        // Check if the day is less than 40, if so, do nothing
+        BinaryDataHandler config = BinaryDataHandler.getInstance();
+        if (config.getDay() < 40) return;
+
         // Only runs on the client side
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
