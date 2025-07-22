@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod.client.mixin.day40;
 
+import com.victorgponce.permadeath_mod.client.data.BinaryDataHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import org.spongepowered.asm.mixin.Final;
@@ -16,6 +17,8 @@ public class RemoveOffHand {
 
     @Inject(method = "handleInputEvents", at = @At("HEAD"), cancellable = true)
     private void removeOffHand(CallbackInfo ci) {
+        BinaryDataHandler config = BinaryDataHandler.getInstance();
+        if (config.getDay() < 40) return;
         // Disable off-hand usage
         if (this.options.swapHandsKey.wasPressed()) {
             ci.cancel();
