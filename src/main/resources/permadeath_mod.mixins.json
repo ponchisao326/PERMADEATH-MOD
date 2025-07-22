@@ -45,6 +45,7 @@
     "day30.explosive_shulker.ShulkerProjectileMixin",
     "day40.onTotemActivation",
     "day40.TorchCraftingMixin",
+    "day40.mobs.EndermanModifier",
     "day40.playerinventory.DisableHotbarSlotMixin",
     "day40.playerinventory.PlayerInventoryMixin",
     "day40.playerinventory.SlotRemoverMixin",

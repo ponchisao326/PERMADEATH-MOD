@@ -20,29 +20,27 @@ public class AggresivePiglinMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void setDefaultAnger(EntityType<? extends ZombifiedPiglinEntity> type, World world, CallbackInfo ci) {
         int day = ConfigFileManager.readConfig().getDay();
+        if (day < 20) return;
 
-        if (day >= 20) {
-            ZombifiedPiglinEntity self = (ZombifiedPiglinEntity) (Object) this;
-            // We force anger time to the maximum value integers lets us (2^31-1).
-            self.setAngerTime(Integer.MAX_VALUE);
-        }
+        ZombifiedPiglinEntity self = (ZombifiedPiglinEntity) (Object) this;
+        // We force anger time to the maximum value integers lets us (2^31-1).
+        self.setAngerTime(Integer.MAX_VALUE);
     }
 
     // We inject at final (TAIL) of the initCustomGoals method to force a target assignation (Player) if it doesn't already have it
     @Inject(method = "initCustomGoals", at = @At("TAIL"))
     private void forceTargetAssignment(CallbackInfo ci) {
         int day = ConfigFileManager.readConfig().getDay();
+        if (day < 20) return;
 
-        if (day >= 20) {
-            ZombifiedPiglinEntity self = (ZombifiedPiglinEntity) (Object) this;
-            // Only in server
-            if (!self.getWorld().isClient()) {
-                // If it not have an assigned target, it looks for the nearest player in a radius of 128 block (despawn sphere)
-                if (self.getTarget() == null) {
-                    PlayerEntity nearestPlayer = self.getWorld().getClosestPlayer(self, 128);
-                    if (nearestPlayer != null) {
-                        self.setTarget(nearestPlayer);
-                    }
+        ZombifiedPiglinEntity self = (ZombifiedPiglinEntity) (Object) this;
+        // Only in server
+        if (!self.getWorld().isClient()) {
+            // If it not have an assigned target, it looks for the nearest player in a radius of 128 block (despawn sphere)
+            if (self.getTarget() == null) {
+                PlayerEntity nearestPlayer = self.getWorld().getClosestPlayer(self, 128);
+                if (nearestPlayer != null) {
+                    self.setTarget(nearestPlayer);
                 }
             }
         }

@@ -31,21 +31,22 @@ public abstract class AggresiveSheepMixin extends PassiveEntity {
     @Inject(method = "initGoals", at = @At("TAIL"))
     private void addAggressiveGoals(CallbackInfo ci) {
         int day = ConfigFileManager.readConfig().getDay();
+        if (day < 20) return;
 
-        if (day >= 20) {
-            // We aggregate an attack goal to make the passiveEntity to follow and attack to the target
-            // We make priority to 0 (highest) to force the execution
-            this.goalSelector.add(0, new MeleeAttackGoal((PathAwareEntity) (Object) this, 1.2D, false));
-            // We configure the assignation of the target
-            this.targetSelector.add(1, new RevengeGoal(this).setGroupRevenge());
-            this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-            // LookAtEntityGoal to make the entity look at the player (Optional but if you don't add it the entity may attack you looking at any random position)
-            this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
-        }
+        // We aggregate an attack goal to make the passiveEntity to follow and attack to the target
+        // We make priority to 0 (highest) to force the execution
+        this.goalSelector.add(0, new MeleeAttackGoal((PathAwareEntity) (Object) this, 1.2D, false));
+        // We configure the assignation of the target
+        this.targetSelector.add(1, new RevengeGoal(this).setGroupRevenge());
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+        // LookAtEntityGoal to make the entity look at the player (Optional but if you don't add it the entity may attack you looking at any random position)
+        this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
     }
 
     @Inject(method = "createSheepAttributes", at = @At("RETURN"), cancellable = true)
     private static void injectAttackDamage(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
+        int day = ConfigFileManager.readConfig().getDay();
+        if (day < 20) return;
         DefaultAttributeContainer.Builder builder = cir.getReturnValue();
         // We add the attribute "attack_damage" with a predetermined value (Changeable if you want. recommended to be high to grant the difficulty)
         builder.add(EntityAttributes.ATTACK_DAMAGE, 4.0D);
