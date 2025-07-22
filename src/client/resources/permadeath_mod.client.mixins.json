@@ -6,6 +6,7 @@
   "client": [
     "day40.ClientSlotClampMixin",
     "day40.HandledScreenMixin",
+    "day40.RemoveOffHand",
     "gui.GameMenuMixin",
     "gui.MinecraftClientMixin",
     "gui.TitleScreenMixin"

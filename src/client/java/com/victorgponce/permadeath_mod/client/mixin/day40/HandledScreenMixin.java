@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static com.victorgponce.permadeath_mod.Permadeath_mod.LOGGER;
+
 @Mixin(HandledScreen.class)
 public abstract class HandledScreenMixin {
 
