@@ -1,6 +1,8 @@
 package com.victorgponce.permadeath_mod.mixin.day40.mobs;
 
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
+import com.victorgponce.permadeath_mod.util.tick_counter.TaskManager;
+import com.victorgponce.permadeath_mod.util.tick_counter.TickCounter;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -31,7 +33,7 @@ public class PhantomRiderModifier {
     @Unique
     private static final ThreadLocal<Boolean> inCustomSpawn = ThreadLocal.withInitial(() -> false);
 
-    @Inject(method = "addEntity", at = @At("HEAD"))
+    @Inject(method = "addEntity", at = @At(value = "HEAD"))
     private void onEntitySpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         if (inCustomSpawn.get()) return;
         int day = ConfigFileManager.readConfig().getDay();
@@ -52,11 +54,19 @@ public class PhantomRiderModifier {
                 // Add the skeleton as a passenger to the phantom
                 // Ensure the passenger entity is registered in the world.
 
-                LOGGER.info("Spawning skeleton as a passenger to phantom: {}, with previous passenger: {}", skeleton.getName().getString(), entity.getPassengerList());
+                LOGGER.info("Spawning skeleton as a passenger to phantom: {}" +
+                        ", with previous passenger: {}" +
+                        " Entity has vehicle: {}", skeleton.getName().getString(), entity.getPassengerList(), entity.hasVehicle());
 
-                // It dismount the skeleton and I don't know why xd, I would try to fix it later
+                // Spawn the skeleton in the world and make it ride the phantom with a delay
+                // POR QUE COÑO NO FUNCIONA ESTA PUTA MIERDA, NI CON DELAY NI SIN EL, NO MONTAN LOS PUTOS ESQUELETOS EN LOS PHANTOMS
                 serverWorld.spawnEntity(skeleton);
-                skeleton.startRiding(entity, true);
+                TickCounter counter = new TickCounter(5, () -> {
+                    skeleton.startRiding(entity, true);
+                    LOGGER.info("Intentando montar con delay: {}, Pasajero actual: {}", skeleton.hasVehicle(), skeleton.getPassengerList());
+                });
+
+                TaskManager.addTask(counter);
             }
         } finally {
             inCustomSpawn.set(false);
