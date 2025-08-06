@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.util.tick_counter;
+package com.victorgponce.permadeath_mod.util.tickcounter;
 
 import java.util.ArrayList;
 import java.util.Iterator;

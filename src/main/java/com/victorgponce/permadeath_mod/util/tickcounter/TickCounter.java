@@ -1,4 +1,4 @@
-package com.victorgponce.permadeath_mod.util.tick_counter;
+package com.victorgponce.permadeath_mod.util.tickcounter;
 
 /**
  * A utility class that counts down ticks and executes a task when the countdown reaches zero.
