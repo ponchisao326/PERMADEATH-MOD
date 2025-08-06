@@ -1,8 +1,8 @@
 package com.victorgponce.permadeath_mod.mixin.day40.mobs;
 
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
-import com.victorgponce.permadeath_mod.util.tick_counter.TaskManager;
-import com.victorgponce.permadeath_mod.util.tick_counter.TickCounter;
+import com.victorgponce.permadeath_mod.util.tickcounter.TaskManager;
+import com.victorgponce.permadeath_mod.util.tickcounter.TickCounter;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -49,7 +49,7 @@ public class PhantomRiderModifier {
                 int skeletonType = Random.create().nextInt(5);
                 SkeletonEntity skeleton = createCustomSkeleton(serverWorld, skeletonType);
 
-                // Position the skeleton where the phantom is (you can adjust an offset if desired)
+                // Position the skeleton where the phantom is
                 skeleton.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), entity.getYaw(), entity.getPitch());
                 // Add the skeleton as a passenger to the phantom
                 // Ensure the passenger entity is registered in the world.
@@ -59,14 +59,8 @@ public class PhantomRiderModifier {
                         " Entity has vehicle: {}", skeleton.getName().getString(), entity.getPassengerList(), entity.hasVehicle());
 
                 // Spawn the skeleton in the world and make it ride the phantom with a delay
-                // POR QUE COÑO NO FUNCIONA ESTA PUTA MIERDA, NI CON DELAY NI SIN EL, NO MONTAN LOS PUTOS ESQUELETOS EN LOS PHANTOMS
                 serverWorld.spawnEntity(skeleton);
-                TickCounter counter = new TickCounter(5, () -> {
-                    skeleton.startRiding(entity, true);
-                    LOGGER.info("Intentando montar con delay: {}, Pasajero actual: {}", skeleton.hasVehicle(), skeleton.getPassengerList());
-                });
-
-                TaskManager.addTask(counter);
+                skeleton.startRiding(entity);
             }
         } finally {
             inCustomSpawn.set(false);
