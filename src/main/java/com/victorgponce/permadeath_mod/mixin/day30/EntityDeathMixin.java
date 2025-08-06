@@ -1,5 +1,6 @@
 package com.victorgponce.permadeath_mod.mixin.day30;
 
+import com.victorgponce.permadeath_mod.mixin.day40.mobs.SpiderTransformation;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
 import com.victorgponce.permadeath_mod.util.EntitiesCounter;
 import net.minecraft.entity.Entity;
@@ -38,6 +39,11 @@ public class EntityDeathMixin {
             if (customName != null && customName.getString().equals("Resistance Blaze")) {
                 EntitiesCounter.blazeCount--;
             }
+        }
+
+        if (day < 40) return;
+        if (entity instanceof GuardianEntity) {
+            EntitiesCounter.caveSpiderCount--;
         }
     }
 }
