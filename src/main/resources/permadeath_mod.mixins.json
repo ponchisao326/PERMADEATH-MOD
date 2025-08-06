@@ -46,6 +46,7 @@
     "day40.onTotemActivation",
     "day40.TorchCraftingMixin",
     "day40.mobs.EndermanModifier",
+    "day40.mobs.MobEffects",
     "day40.mobs.PhantomRiderModifier",
     "day40.playerinventory.DisableHotbarSlotMixin",
     "day40.playerinventory.PlayerInventoryMixin",
