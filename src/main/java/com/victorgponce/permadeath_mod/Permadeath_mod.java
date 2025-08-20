@@ -9,7 +9,6 @@ import com.victorgponce.permadeath_mod.mobs.EndSpawnConfig;
 import com.victorgponce.permadeath_mod.mobs.MushroomBiomeModifier;
 import com.victorgponce.permadeath_mod.network.*;
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
-import com.victorgponce.permadeath_mod.util.tickcounter.TaskManager;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
@@ -92,10 +91,5 @@ public class Permadeath_mod implements DedicatedServerModInitializer {
 
         // Register the LootTableOverwriter
         LootTableOverwriter.register();
-
-        ServerTickEvents.END_SERVER_TICK.register(server -> {
-            TaskManager.tick();
-        });
     }
-
 }

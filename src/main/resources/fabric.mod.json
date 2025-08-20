@@ -15,6 +15,9 @@
     ],
     "server": [
       "com.victorgponce.permadeath_mod.Permadeath_mod"
+    ],
+    "main": [
+      "com.victorgponce.permadeath_mod.Permadeath_modMain"
     ]
   },
   "mixins": [
