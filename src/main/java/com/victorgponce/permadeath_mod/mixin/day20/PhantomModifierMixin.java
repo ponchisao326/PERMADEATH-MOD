@@ -14,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.HashMap;
 
+import static com.victorgponce.permadeath_mod.Permadeath_mod.LOGGER;
+
 @Mixin(PhantomEntity.class)
 public class PhantomModifierMixin {
 
@@ -21,7 +23,9 @@ public class PhantomModifierMixin {
     public void phantomSizeIncrease(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData, CallbackInfoReturnable<EntityData> cir) {
         int day = ConfigFileManager.readConfig().getDay();
 
-        if (day >= 20) {
+        if (day >= 20 && day < 40) {
+            // Log the day for debugging purposes
+            LOGGER.info("Day: " + day + ", modifying Phantom size and health");
             // We obtain the entity and set custom params
             PhantomEntity phantom = (PhantomEntity) (Object) this;
             phantom.setPhantomSize(9);

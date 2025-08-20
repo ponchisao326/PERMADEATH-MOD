@@ -1,6 +1,8 @@
 package com.victorgponce.permadeath_mod.mixin.day40.mobs;
 
 import com.victorgponce.permadeath_mod.util.ConfigFileManager;
+import com.victorgponce.permadeath_mod.util.mobcaps.MultiplayerHandler;
+import com.victorgponce.permadeath_mod.util.mobcaps.SinglePlayerHandler;
 import com.victorgponce.permadeath_mod.util.tickcounter.TaskManager;
 import com.victorgponce.permadeath_mod.util.tickcounter.TickCounter;
 import net.minecraft.enchantment.Enchantments;
@@ -32,6 +34,8 @@ public class PhantomRiderModifier {
 
     @Unique
     private static final ThreadLocal<Boolean> inCustomSpawn = ThreadLocal.withInitial(() -> false);
+    @Unique
+    private static final SinglePlayerHandler singlePlayerHandler = SinglePlayerHandler.getInstance();
 
     @Inject(method = "addEntity", at = @At(value = "HEAD"))
     private void onEntitySpawn(Entity entity, CallbackInfoReturnable<Boolean> cir) {
@@ -44,7 +48,7 @@ public class PhantomRiderModifier {
             World world = entity.getWorld();
             if (!(world instanceof ServerWorld serverWorld)) return;
 
-            if (entity instanceof PhantomEntity) {
+            if (entity instanceof PhantomEntity phantom) {
                 // Create a skeleton instance
                 int skeletonType = Random.create().nextInt(5);
                 SkeletonEntity skeleton = createCustomSkeleton(serverWorld, skeletonType);
@@ -60,7 +64,7 @@ public class PhantomRiderModifier {
 
                 // Spawn the skeleton in the world and make it ride the phantom with a delay
                 serverWorld.spawnEntity(skeleton);
-                skeleton.startRiding(entity);
+                skeleton.startRiding(phantom, true);
             }
         } finally {
             inCustomSpawn.set(false);
