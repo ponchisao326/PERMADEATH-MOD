@@ -4,6 +4,7 @@
   "package": "com.victorgponce.permadeath_mod.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "common.MobcapCounterAdder",
     "common.NetheriteGrabberProhibiter",
     "common.NetheritePickUpProhibiter",
     "common.onDeathMixin",
